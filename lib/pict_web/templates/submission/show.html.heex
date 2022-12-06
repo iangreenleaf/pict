@@ -1,0 +1,23 @@
+<h1>Show Submission</h1>
+
+<ul>
+
+  <li>
+    <strong>Order:</strong>
+    <%= @submission.order %>
+  </li>
+
+  <li>
+    <strong>Completed:</strong>
+    <%= @submission.completed %>
+  </li>
+
+  <li>
+    <strong>Text:</strong>
+    <%= @submission.text %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.submission_path(@conn, :edit, @submission) %></span> |
+<span><%= link "Back", to: Routes.submission_path(@conn, :index) %></span>
