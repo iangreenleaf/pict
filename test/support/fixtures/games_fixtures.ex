@@ -25,4 +25,18 @@ defmodule Pict.GamesFixtures do
 
     game
   end
+
+  @doc """
+  Generate a game_player.
+  """
+  def game_player_fixture(attrs \\ %{}) do
+    {:ok, game_player} =
+      attrs
+      |> Enum.into(%{
+        order: 42
+      })
+      |> Pict.Games.create_game_player()
+
+    game_player
+  end
 end

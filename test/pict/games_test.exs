@@ -58,4 +58,58 @@ defmodule Pict.GamesTest do
       assert %Ecto.Changeset{} = Games.change_game(game)
     end
   end
+
+  describe "game_players" do
+    alias Pict.Games.GamePlayer
+
+    import Pict.GamesFixtures
+
+    @invalid_attrs %{order: nil}
+
+    test "list_game_players/0 returns all game_players" do
+      game_player = game_player_fixture()
+      assert Games.list_game_players() == [game_player]
+    end
+
+    test "get_game_player!/1 returns the game_player with given id" do
+      game_player = game_player_fixture()
+      assert Games.get_game_player!(game_player.id) == game_player
+    end
+
+    test "create_game_player/1 with valid data creates a game_player" do
+      valid_attrs = %{order: 42}
+
+      assert {:ok, %GamePlayer{} = game_player} = Games.create_game_player(valid_attrs)
+      assert game_player.order == 42
+    end
+
+    test "create_game_player/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Games.create_game_player(@invalid_attrs)
+    end
+
+    test "update_game_player/2 with valid data updates the game_player" do
+      game_player = game_player_fixture()
+      update_attrs = %{order: 43}
+
+      assert {:ok, %GamePlayer{} = game_player} = Games.update_game_player(game_player, update_attrs)
+      assert game_player.order == 43
+    end
+
+    test "update_game_player/2 with invalid data returns error changeset" do
+      game_player = game_player_fixture()
+      assert {:error, %Ecto.Changeset{}} = Games.update_game_player(game_player, @invalid_attrs)
+      assert game_player == Games.get_game_player!(game_player.id)
+    end
+
+    test "delete_game_player/1 deletes the game_player" do
+      game_player = game_player_fixture()
+      assert {:ok, %GamePlayer{}} = Games.delete_game_player(game_player)
+      assert_raise Ecto.NoResultsError, fn -> Games.get_game_player!(game_player.id) end
+    end
+
+    test "change_game_player/1 returns a game_player changeset" do
+      game_player = game_player_fixture()
+      assert %Ecto.Changeset{} = Games.change_game_player(game_player)
+    end
+  end
 end
