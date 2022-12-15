@@ -55,6 +55,13 @@ defmodule Pict.Accounts do
     |> Repo.insert()
   end
 
+  def find_or_initialize(email) do
+    case Repo.get_by(Account, email: email) do
+      nil -> %Account{email: email}
+      acct -> acct
+    end
+  end
+
   @doc """
   Updates a account.
 

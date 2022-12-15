@@ -4,6 +4,7 @@ defmodule Pict.Games do
   """
 
   import Ecto.Query, warn: false
+  import Ecto.Changeset
   alias Pict.Repo
 
   alias Pict.Games.Game
@@ -49,9 +50,10 @@ defmodule Pict.Games do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_game(attrs \\ %{}) do
+  def create_game(attrs = %{ "email" => email }) do
     %Game{}
     |> Game.changeset(attrs)
+    |> put_assoc(:owner, Pict.Accounts.find_or_initialize(email))
     |> Repo.insert()
   end
 
