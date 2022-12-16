@@ -7,7 +7,10 @@ defmodule Pict.Games do
   import Ecto.Changeset
   alias Pict.Repo
 
+  alias Pict.Accounts
   alias Pict.Games.Game
+  alias Pict.Games.GamePlayer
+  alias Pict.Games.Signup
 
   @doc """
   Returns the list of games.
@@ -50,11 +53,28 @@ defmodule Pict.Games do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_game(attrs = %{ "email" => email }) do
+  def create_game_from_signup!(attrs = %Signup{}) do
     %Game{}
-    |> Game.changeset(attrs)
-    |> put_assoc(:owner, Pict.Accounts.find_or_initialize(email))
-    |> Repo.insert()
+    |> Game.changeset(%{name: attrs.name})
+    |> put_assoc(:owner, Accounts.find_or_initialize(attrs.email))
+    |> put_assoc(:game_players, game_players(attrs.player_emails))
+    |> Repo.insert!()
+  end
+
+  defp game_players(emails) do
+    emails
+    |> String.split("\n", trim: true)
+    |> Enum.map(&String.trim/1)
+    |> Stream.map(&Accounts.find_or_initialize/1)
+    |> Stream.with_index
+    |> Stream.map(fn {account, idx} -> %GamePlayer{ order: idx , player: account } end)
+    |> Enum.to_list()
+  end
+
+  def create_signup(attrs) do
+    %Signup{}
+    |> Signup.changeset(attrs)
+    |> apply_action(:create)
   end
 
   @doc """
@@ -102,6 +122,11 @@ defmodule Pict.Games do
   """
   def change_game(%Game{} = game, attrs \\ %{}) do
     Game.changeset(game, attrs)
+  end
+
+  def change_signup(%Game{} = game) do
+    # doesn't support editing right now
+    Signup.changeset(%Signup{}, %{})
   end
 
   alias Pict.Games.GamePlayer

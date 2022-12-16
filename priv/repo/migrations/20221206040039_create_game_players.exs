@@ -4,13 +4,13 @@ defmodule Pict.Repo.Migrations.CreateGamePlayers do
   def change do
     create table(:game_players) do
       add :order, :integer
-      add :player, references(:accounts, on_delete: :nothing)
-      add :game, references(:games, on_delete: :nothing)
+      add :player_id, references(:accounts, on_delete: :nothing)
+      add :game_id, references(:games, on_delete: :nothing)
 
       timestamps()
     end
 
-    create index(:game_players, [:player])
-    create index(:game_players, [:game])
+    create index(:game_players, [:player_id])
+    create index(:game_players, [:game_id])
   end
 end

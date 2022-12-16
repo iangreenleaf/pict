@@ -10,13 +10,14 @@ defmodule PictWeb.GameController do
   end
 
   def new(conn, _params) do
-    changeset = Games.change_game(%Game{})
+    changeset = Games.change_signup(%Game{})
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"game" => game_params}) do
-    case Games.create_game(game_params) do
-      {:ok, game} ->
+  def create(conn, %{"signup" => params}) do
+    case Games.create_signup(params) do
+      {:ok, signup} ->
+        game = Games.create_game_from_signup!(signup)
         conn
         |> put_flash(:info, "Game created successfully.")
         |> redirect(to: Routes.game_path(conn, :show, game))
