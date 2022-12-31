@@ -3,11 +3,11 @@ defmodule Pict.Repo.Migrations.CreatePrompts do
 
   def change do
     create table(:prompts) do
-      add :game, references(:games, on_delete: :nothing)
+      add :game_id, references(:games, on_delete: :nothing)
 
       timestamps()
     end
 
-    create index(:prompts, [:game])
+    create index(:prompts, [:game_id])
   end
 end

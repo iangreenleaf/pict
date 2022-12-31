@@ -8,6 +8,7 @@ defmodule Pict.Games do
   alias Pict.Repo
 
   alias Pict.Accounts
+  alias Pict.Prompts
   alias Pict.Games.Game
   alias Pict.Games.GamePlayer
   alias Pict.Games.Signup
@@ -54,11 +55,16 @@ defmodule Pict.Games do
 
   """
   def create_game_from_signup!(attrs = %Signup{}) do
-    %Game{}
+    game = %Game{}
     |> Game.changeset(%{name: attrs.name})
     |> put_assoc(:owner, Accounts.find_or_initialize(attrs.email))
     |> put_assoc(:game_players, game_players(attrs.player_emails))
     |> Repo.insert!()
+    |> Repo.preload(:players)
+
+    Prompts.initialize_prompts!(game)
+
+    game
   end
 
   defp game_players(emails) do

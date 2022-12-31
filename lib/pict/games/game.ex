@@ -9,7 +9,7 @@ defmodule Pict.Games.Game do
     field :name, :string
     belongs_to :owner, Account
     has_many :game_players, GamePlayer
-    has_many :players, through: [:game_players, :players]
+    has_many :players, through: [:game_players, :player]
 
     timestamps()
   end

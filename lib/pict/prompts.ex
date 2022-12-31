@@ -4,9 +4,36 @@ defmodule Pict.Prompts do
   """
 
   import Ecto.Query, warn: false
+  import Ecto.Changeset
   alias Pict.Repo
 
   alias Pict.Prompts.Prompt
+  alias Pict.Prompts.Submission
+
+  def initialize_prompts!(game) do
+    #TODO ordering?
+    for l <- 1..length(game.game_players) do
+      {b, a} = Enum.split(game.game_players, l)
+      create_prompt!(game: game, game_players: a ++ b)
+    end
+  end
+
+  defp create_prompt!(game: game, game_players: players) do
+    submissions =
+      players
+      |> Enum.with_index
+      |> Enum.map(fn {player, idx} ->
+        %Submission{}
+        |> Submission.changeset(%{order: idx})
+        |> put_assoc(:game_player, player)
+      end)
+
+    %Prompt{}
+    |> Prompt.changeset(%{})
+    |> put_assoc(:submissions, submissions)
+    |> put_assoc(:game, game)
+    |> Repo.insert!()
+  end
 
   @doc """
   Returns the list of prompts.
