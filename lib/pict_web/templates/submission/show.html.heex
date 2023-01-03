@@ -3,18 +3,13 @@
 <ul>
 
   <li>
-    <strong>Order:</strong>
-    <%= @submission.order %>
-  </li>
-
-  <li>
-    <strong>Completed:</strong>
-    <%= @submission.completed %>
-  </li>
-
-  <li>
     <strong>Text:</strong>
     <%= @submission.text %>
+  </li>
+
+  <li>
+    <strong>Drawing:</strong>
+    <%= img_tag drawing_url(@submission) %>
   </li>
 
 </ul>
