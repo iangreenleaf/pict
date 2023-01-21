@@ -14,7 +14,8 @@ defmodule Pict.Prompts do
     #TODO ordering?
     for l <- 1..length(game.game_players) do
       {b, a} = Enum.split(game.game_players, l)
-      create_prompt!(game: game, game_players: a ++ b)
+      prompt = create_prompt!(game: game, game_players: a ++ b)
+      prompt
     end
   end
 
@@ -33,6 +34,25 @@ defmodule Pict.Prompts do
     |> put_assoc(:submissions, submissions)
     |> put_assoc(:game, game)
     |> Repo.insert!()
+  end
+
+  def activate_next_submission(%Submission{prompt_id: prompt_id, order: order}) do
+    case get_submission_at(prompt_id, order + 1) do
+      nil -> false
+      next_sub ->
+        next_sub
+        |> Repo.preload(:player)
+        |> PictWeb.Emails.UserEmail.submission_ready()
+        |> Pict.Mailer.deliver()
+    end
+  end
+
+  defp get_submission_at(prompt_id, order) do
+    Repo.get_by(
+      Submission,
+      prompt_id: prompt_id,
+      order: order
+    )
   end
 
   @doc """
@@ -193,7 +213,15 @@ defmodule Pict.Prompts do
   def update_submission(%Submission{} = submission, attrs) do
     submission
     |> Submission.changeset(attrs)
+    |> put_change(:completed, true)
     |> Repo.update()
+    |> case do
+      {:ok, submission} ->
+        activate_next_submission(submission)
+        {:ok, submission}
+
+      err -> err
+    end
   end
 
   @doc """

@@ -2,6 +2,8 @@ defmodule Pict.Accounts.Account do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Swoosh.Email.Recipient, address: :email}
+
   schema "accounts" do
     field :email, :string
 
