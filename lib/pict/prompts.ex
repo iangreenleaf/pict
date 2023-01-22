@@ -12,11 +12,33 @@ defmodule Pict.Prompts do
 
   def initialize_prompts!(game) do
     #TODO ordering?
-    for l <- 1..length(game.game_players) do
+    prompts = for l <- 1..length(game.game_players) do
       {b, a} = Enum.split(game.game_players, l)
-      prompt = create_prompt!(game: game, game_players: a ++ b)
-      prompt
+      create_prompt!(game: game, game_players: a ++ b)
     end
+
+    send_invites(prompts, game.owner)
+
+    prompts
+  end
+
+  defp send_invites(prompts, owner) do
+    for submission <- first_submissions(prompts) do
+      PictWeb.Emails.UserEmail.prompt_ready(submission, owner)
+    end
+    |> Pict.Mailer.deliver_many()
+  end
+
+  defp first_submissions(prompts) do
+    import Ecto.Query, only: [from: 2]
+
+    prompt_ids = for p <- prompts, do: p.id
+
+    Repo.all(
+      from s in Submission,
+      where: s.order == 0 and s.prompt_id in ^prompt_ids,
+      preload: [:player]
+    )
   end
 
   defp create_prompt!(game: game, game_players: players) do

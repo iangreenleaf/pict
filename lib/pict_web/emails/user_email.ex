@@ -8,4 +8,12 @@ defmodule PictWeb.Emails.UserEmail do
     |> subject("Take your turn in Telephone Pictionary")
     |> render_body("submission_ready.html", %{submission: submission})
   end
+
+  def prompt_ready(submission, owner) do
+    new()
+    |> to(submission.player)
+    |> from({"Telephone Pictionary", "pict@example.com"})
+    |> subject("You've been invited to play Telephone Pictionary")
+    |> render_body("prompt_ready.html", %{submission: submission, owner: owner})
+  end
 end
