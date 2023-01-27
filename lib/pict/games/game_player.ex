@@ -6,6 +6,7 @@ defmodule Pict.Games.GamePlayer do
 
   schema "game_players" do
     field :order, :integer
+    field :name, :string
     belongs_to :player, Account
     belongs_to :game, Game
 
@@ -15,7 +16,7 @@ defmodule Pict.Games.GamePlayer do
   @doc false
   def changeset(game_player, attrs) do
     game_player
-    |> cast(attrs, [:order])
-    |> validate_required([:order])
+    |> cast(attrs, [:name])
+    |> validate_required([:name])
   end
 end

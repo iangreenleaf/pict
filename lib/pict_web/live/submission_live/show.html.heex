@@ -1,0 +1,24 @@
+<%= cond do %>
+<%= is_nil(@submission.game_player.name) -> %>
+  <.modal return_to={Routes.submission_show_path(@socket, :edit, @submission)}>
+    <.live_component
+      module={PictWeb.SubmissionLive.GamePlayerComponent}
+      id={@submission.game_player.id}
+      action={@live_action}
+      game_player={@submission.game_player}
+      return_to={Routes.submission_show_path(@socket, :edit, @submission)}
+    />
+  </.modal>
+<%= @live_action in [:edit] -> %>
+  <.live_component
+    module={PictWeb.SubmissionLive.FormComponent}
+    id={@submission.id}
+    title={@page_title}
+    action={@live_action}
+    submission={@submission}
+    return_to={Routes.submission_show_path(@socket, :show, @submission)}
+  />
+<% true -> %>
+  <span><%= live_patch "Edit", to: Routes.submission_show_path(@socket, :edit, @submission), class: "button" %></span> |
+  <span><%= live_redirect "Back", to: Routes.submission_index_path(@socket, :index) %></span>
+<% end %>

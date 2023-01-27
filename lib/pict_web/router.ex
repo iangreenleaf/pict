@@ -19,7 +19,8 @@ defmodule PictWeb.Router do
 
     get "/", PageController, :index
 
-    resources "/submissions", SubmissionController
+    live "/submissions/:id", SubmissionLive.Show, :show
+    live "/submissions/:id/edit", SubmissionLive.Show, :edit
     resources "/games", GameController
   end
 

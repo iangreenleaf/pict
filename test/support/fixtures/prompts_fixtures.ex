@@ -33,4 +33,18 @@ defmodule Pict.PromptsFixtures do
 
     submission
   end
+
+  @doc """
+  Generate a submission.
+  """
+  def submission_fixture(attrs \\ %{}) do
+    {:ok, submission} =
+      attrs
+      |> Enum.into(%{
+
+      })
+      |> Pict.Prompts.create_submission()
+
+    submission
+  end
 end

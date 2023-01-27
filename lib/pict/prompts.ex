@@ -200,7 +200,7 @@ defmodule Pict.Prompts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_submission!(id), do: Repo.get!(Submission, id)
+  def get_submission!(id), do: Repo.get!(Submission, id) |> Repo.preload(:game_player)
 
   @doc """
   Creates a submission.
