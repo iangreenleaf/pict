@@ -1,3 +1,8 @@
+<%= unless is_nil(@clue) do %>
+  <h1>Your clue is:</h1>
+  <.entered submission={@clue} />
+<% end %>
+
 <%= cond do %>
 <%= is_nil(@submission.game_player.name) -> %>
   <.modal return_to={Routes.submission_show_path(@socket, :edit, @submission)}>
@@ -19,6 +24,7 @@
     return_to={Routes.submission_show_path(@socket, :show, @submission)}
   />
 <% true -> %>
-  <span><%= live_patch "Edit", to: Routes.submission_show_path(@socket, :edit, @submission), class: "button" %></span> |
-  <span><%= live_redirect "Back", to: Routes.submission_index_path(@socket, :index) %></span>
+  <h1>You submitted:</h1>
+  <.entered submission={@submission} />
+  <div><%= live_patch "Edit", to: Routes.submission_show_path(@socket, :edit, @submission), class: "button" %></div>
 <% end %>

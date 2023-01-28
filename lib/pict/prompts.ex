@@ -3,12 +3,18 @@ defmodule Pict.Prompts do
   The Prompts context.
   """
 
+  require Integer
+
   import Ecto.Query, warn: false
   import Ecto.Changeset
   alias Pict.Repo
 
   alias Pict.Prompts.Prompt
   alias Pict.Prompts.Submission
+
+  def expects_drawing?(%Submission{order: order}) do
+    Integer.is_odd(order)
+  end
 
   def initialize_prompts!(game) do
     #TODO ordering?
@@ -56,6 +62,10 @@ defmodule Pict.Prompts do
     |> put_assoc(:submissions, submissions)
     |> put_assoc(:game, game)
     |> Repo.insert!()
+  end
+
+  def get_clue_for(%Submission{prompt_id: prompt_id, order: order}) do
+    get_submission_at(prompt_id, order - 1)
   end
 
   def activate_next_submission(%Submission{prompt_id: prompt_id, order: order}) do

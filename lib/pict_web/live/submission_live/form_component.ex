@@ -1,7 +1,7 @@
 defmodule PictWeb.SubmissionLive.FormComponent do
   use PictWeb, :live_component
 
-  require Integer
+  import Pict.Prompts, only: [expects_drawing?: 1]
 
   alias Pict.Prompts
   alias Pict.Prompts.Submission
@@ -13,10 +13,6 @@ defmodule PictWeb.SubmissionLive.FormComponent do
       |> assign(:uploaded_files, [])
       |> allow_upload(:drawing, accept: ~w(.jpg .jpeg .png))
     }
-  end
-
-  def expects_drawing?(%Submission{order: order}) do
-    Integer.is_odd(order)
   end
 
   @impl true

@@ -12,7 +12,6 @@
 
     <%= if expects_drawing?(@submission) do %>
       <%= label f, :drawing %>
-<% IO.inspect(@uploads.drawing) %>
       <%= live_file_input @uploads.drawing %>
       <%= error_tag f, :drawing %>
     <% else %>
