@@ -35,8 +35,33 @@ defmodule PictWeb.SubmissionLive.FormComponent do
     {:noreply, assign(socket, :changeset, changeset)}
   end
 
+  # For upload validation
+  def handle_event("validate", _params, socket) do
+    {:noreply, socket}
+  end
+
   def handle_event("save", %{"submission" => submission_params}, socket) do
     save_submission(socket, socket.assigns.action, submission_params)
+  end
+
+  def handle_event("save", _params, socket) do
+    consume_uploaded_entries(socket, :drawing, fn meta, entry ->
+      {:ok, submission} =
+        Prompts.update_submission(socket.assigns.submission, %{
+          "drawing" => %Plug.Upload{
+            content_type: entry.client_type,
+            filename: entry.client_name,
+            path: meta.path
+          },
+        })
+
+      {:ok, Pict.Drawing.url({submission.drawing, nil}, :original)}
+    end)
+
+    {:noreply,
+      socket
+      |> put_flash(:info, "Submission updated successfully")
+      |> push_redirect(to: socket.assigns.return_to)}
   end
 
   defp save_submission(socket, :edit, submission_params) do
@@ -49,19 +74,6 @@ defmodule PictWeb.SubmissionLive.FormComponent do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
-    end
-  end
-
-  defp save_submission(socket, :new, submission_params) do
-    case Prompts.create_submission(submission_params) do
-      {:ok, _submission} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Submission created successfully")
-         |> push_redirect(to: socket.assigns.return_to)}
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
     end
   end
 end
