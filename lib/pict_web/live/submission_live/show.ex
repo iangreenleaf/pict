@@ -26,15 +26,17 @@ defmodule PictWeb.SubmissionLive.Show do
   def entered(assigns) do
     ~H"""
     <%= if expects_drawing?(@submission) do %>
-      <%= img_tag drawing_url(@submission) %>
+      <%= link to: drawing_url(@submission, :original), target: "_blank" do %>
+        <%= img_tag drawing_url(@submission) %>
+      <% end %>
     <% else %>
       <%= @submission.text %>
     <% end %>
     """
   end
 
-  def drawing_url(submission) do
-    Pict.Drawing.url({submission.drawing, submission}, :large)
+  def drawing_url(submission, size \\ :large) do
+    Pict.Drawing.url({submission.drawing, submission}, size)
   end
 
   defp page_title(:show), do: "Show Submission"
