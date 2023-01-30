@@ -3,7 +3,7 @@ defmodule Pict.Drawing do
   use Waffle.Ecto.Definition
 
   @versions [:original, :large, :thumb]
-  @sizes [thumb: 250, large: 1200]
+  @sizes [thumb: 250, large: 2000]
 
   def transform(:original, _) do
     {:convert, "-strip"}
@@ -11,6 +11,10 @@ defmodule Pict.Drawing do
 
   def transform(type, _) do
     size = @sizes[type]
-    {:convert, "-strip -resize #{size}x#{size}^> -gravity center -crop 1:1 +repage -quality 90 -define webp:auto-filter=true -format webp", :webp}
+    {:convert, "-strip -resize #{size}x#{size} -quality 90 -define webp:auto-filter=true -define webp:use-sharp-yuv=1 -format webp", :webp}
+  end
+
+  def filename(version, {file, submission}) do
+    "#{submission.id}_#{version}"
   end
 end

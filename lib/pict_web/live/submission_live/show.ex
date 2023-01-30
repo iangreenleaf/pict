@@ -34,7 +34,7 @@ defmodule PictWeb.SubmissionLive.Show do
   end
 
   def drawing_url(submission) do
-    Pict.Drawing.url({submission.drawing, nil}, :large)
+    Pict.Drawing.url({submission.drawing, submission}, :large)
   end
 
   defp page_title(:show), do: "Show Submission"

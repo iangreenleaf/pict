@@ -55,7 +55,7 @@ defmodule PictWeb.SubmissionLive.FormComponent do
           },
         })
 
-      {:ok, Pict.Drawing.url({submission.drawing, nil}, :original)}
+      {:ok, Pict.Drawing.url({submission.drawing, submission}, :original)}
     end)
 
     {:noreply,
