@@ -5,6 +5,8 @@ defmodule Pict.Prompts.Submission do
   alias Pict.Games.GamePlayer
   alias Pict.Prompts.Prompt
 
+  @primary_key {:id, Ecto.UUID, autogenerate: true}
+
   schema "submissions" do
     field :completed, :boolean, default: false
     field :order, :integer

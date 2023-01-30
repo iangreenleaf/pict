@@ -2,7 +2,8 @@ defmodule Pict.Repo.Migrations.CreateSubmissions do
   use Ecto.Migration
 
   def change do
-    create table(:submissions) do
+    create table(:submissions, primary_key: false) do
+      add :id, :uuid, primary_key: true, null: false
       add :order, :integer
       add :completed, :boolean, default: false, null: false
       add :text, :string
