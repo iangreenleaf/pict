@@ -18,7 +18,6 @@
   <.live_component
     module={PictWeb.SubmissionLive.FormComponent}
     id={@submission.id}
-    title={@page_title}
     action={@live_action}
     submission={@submission}
     return_to={Routes.submission_show_path(@socket, :show, @submission)}

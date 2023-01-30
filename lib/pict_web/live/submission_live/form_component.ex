@@ -20,9 +20,9 @@ defmodule PictWeb.SubmissionLive.FormComponent do
     changeset = Prompts.change_submission(submission)
 
     {:ok,
-     socket
-     |> assign(assigns)
-     |> assign(:changeset, changeset)}
+      socket
+      |> assign(assigns)
+      |> assign(:changeset, changeset)}
   end
 
   @impl true
@@ -58,22 +58,23 @@ defmodule PictWeb.SubmissionLive.FormComponent do
       {:ok, Pict.Drawing.url({submission.drawing, submission}, :original)}
     end)
 
-    {:noreply,
-      socket
-      |> put_flash(:info, "Submission updated successfully")
-      |> push_redirect(to: socket.assigns.return_to)}
+    successful_submit(socket)
   end
 
   defp save_submission(socket, :edit, submission_params) do
     case Prompts.update_submission(socket.assigns.submission, submission_params) do
       {:ok, _submission} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Submission updated successfully")
-         |> push_redirect(to: socket.assigns.return_to)}
+        successful_submit(socket)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
     end
+  end
+
+  defp successful_submit(socket) do
+    {:noreply,
+      socket
+      |> put_flash(:info, "Submitted, nice work!")
+      |> push_redirect(to: socket.assigns.return_to)}
   end
 end

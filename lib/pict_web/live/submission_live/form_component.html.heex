@@ -1,6 +1,4 @@
 <div>
-  <h2><%= @title %></h2>
-
   <.form
     let={f}
     for={@changeset}
@@ -11,17 +9,17 @@
     phx-submit="save">
 
     <%= if expects_drawing?(@submission) do %>
-      <%= label f, :drawing %>
+      <%= label f, :drawing, "Upload your drawing" %>
       <%= live_file_input @uploads.drawing %>
       <%= error_tag f, :drawing %>
     <% else %>
-      <%= label f, :text %>
+      <%= label f, :text, "Enter your guess" %>
       <%= text_input f, :text %>
       <%= error_tag f, :text %>
     <% end %>
 
     <div>
-      <%= submit "Save", phx_disable_with: "Saving..." %>
+      <%= submit "Submit", phx_disable_with: "Submitting..." %>
     </div>
   </.form>
 </div>
