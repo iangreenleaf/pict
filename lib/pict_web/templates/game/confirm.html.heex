@@ -1,0 +1,17 @@
+<h1>Start Your Game</h1>
+
+<.form let={f} for={@changeset} action={Routes.game_path(@conn, :start, @game.admin_id)}>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <%= label f, :player_emails %>
+  <%= textarea f, :player_emails %>
+  <%= error_tag f, :player_emails %>
+
+  <div>
+    <%= submit "Start the game" %>
+  </div>
+</.form>

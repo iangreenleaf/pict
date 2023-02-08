@@ -14,17 +14,41 @@ defmodule PictWeb.GameController do
     render(conn, "new.html", changeset: changeset)
   end
 
+  def confirm(conn, %{"admin_id" => admin_id}) do
+    game = Games.get_game_admin!(admin_id)
+    changeset = Games.change_player_registration(game)
+    render(conn, "confirm.html", changeset: changeset, game: game)
+  end
+
   def create(conn, %{"signup" => params}) do
     case Games.create_signup(params) do
       {:ok, signup} ->
         game = Games.create_game_from_signup!(signup)
         conn
-        |> put_flash(:info, "Game created successfully.")
-        |> redirect(to: Routes.game_path(conn, :show, game))
+        |> redirect(to: Routes.game_path(conn, :pending))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
+  end
+
+  def start(conn, %{"admin_id" => admin_id, "player_registration" => params}) do
+    game = Games.get_game_admin!(admin_id)
+
+    case Games.create_player_registration(params) do
+      {:ok, registration} ->
+        game = Games.register_players!(game, registration)
+        conn
+        |> put_flash(:info, "Game created successfully.")
+        |> redirect(to: Routes.game_path(conn, :show, game))
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "confirm.html", changeset: changeset)
+    end
+  end
+
+  def pending(conn, _params) do
+    render(conn, "pending.html")
   end
 
   def show(conn, %{"id" => id}) do

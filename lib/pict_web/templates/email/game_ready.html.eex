@@ -1,0 +1,7 @@
+<b>Don't delete this email! You'll need it to make changes to your game.</b>
+
+<h1>Game ready: <%= @game.name %></h1>
+<p>
+  Your game is almost ready!
+  <%= link("Click here to invite players and start the game", to: Routes.game_path(PictWeb.Endpoint, :confirm, @game.admin_id)) %>
+</p>

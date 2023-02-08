@@ -21,7 +21,10 @@ defmodule PictWeb.Router do
 
     live "/submissions/:id", SubmissionLive.Show, :show
     live "/submissions/:id/edit", SubmissionLive.Show, :edit
-    resources "/games", GameController
+    resources "/games", GameController, only: [:new, :create]
+    get "/games/pending", GameController, :pending
+    get "/games/:admin_id/confirm", GameController, :confirm
+    post "/games/:admin_id/start", GameController, :start
   end
 
   # Other scopes may use custom stacks.

@@ -7,8 +7,8 @@ defmodule Pict.Repo.Migrations.CreateSubmissions do
       add :order, :integer
       add :completed, :boolean, default: false, null: false
       add :text, :string
-      add :prompt_id, references(:prompts, on_delete: :nothing)
-      add :game_player_id, references(:game_players, on_delete: :nothing)
+      add :prompt_id, references(:prompts, on_delete: :delete_all)
+      add :game_player_id, references(:game_players, on_delete: :nilify_all)
 
       timestamps()
     end

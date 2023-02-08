@@ -3,12 +3,14 @@ defmodule Pict.Games.GamePlayer do
   import Ecto.Changeset
   alias Pict.Accounts.Account
   alias Pict.Games.Game
+  alias Pict.Prompts.Submission
 
   schema "game_players" do
     field :order, :integer
     field :name, :string
     belongs_to :player, Account
     belongs_to :game, Game
+    has_many :submissions, Submission
 
     timestamps()
   end

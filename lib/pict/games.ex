@@ -12,6 +12,7 @@ defmodule Pict.Games do
   alias Pict.Games.Game
   alias Pict.Games.GamePlayer
   alias Pict.Games.Signup
+  alias Pict.Games.PlayerRegistration
 
   @doc """
   Returns the list of games.
@@ -41,6 +42,7 @@ defmodule Pict.Games do
 
   """
   def get_game!(id), do: Repo.get!(Game, id)
+  def get_game_admin!(admin_id), do: Repo.get_by!(Game, admin_id: admin_id)
 
   @doc """
   Creates a game.
@@ -54,17 +56,36 @@ defmodule Pict.Games do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_game_from_signup!(attrs = %Signup{}) do
-    game = %Game{}
-    |> Game.changeset(%{name: attrs.name})
-    |> put_assoc(:owner, Accounts.find_or_initialize(attrs.email))
-    |> put_assoc(:game_players, game_players(attrs.player_emails))
-    |> Repo.insert!()
-    |> Repo.preload(:players)
+
+  def register_players!(game, attrs = %PlayerRegistration{}) do
+    game =
+      game
+      |> Repo.preload(:game_players)
+      |> Game.changeset(%{})
+      |> put_assoc(:game_players, game_players(attrs.player_emails))
+      |> Repo.update!()
+      |> Repo.preload([:game_players, :owner])
 
     Prompts.initialize_prompts!(game)
 
     game
+  end
+
+  def create_game_from_signup!(attrs = %Signup{}) do
+    game =
+      %Game{}
+      |> Game.changeset(%{name: attrs.name})
+      |> put_assoc(:owner, Accounts.find_or_initialize(attrs.email))
+      |> Repo.insert!()
+
+    send_admin_email(game)
+
+    game
+  end
+
+  defp send_admin_email(game) do
+    PictWeb.Emails.UserEmail.game_ready(game)
+    |> Pict.Mailer.deliver()
   end
 
   defp game_players(emails) do
@@ -80,6 +101,12 @@ defmodule Pict.Games do
   def create_signup(attrs) do
     %Signup{}
     |> Signup.changeset(attrs)
+    |> apply_action(:create)
+  end
+
+  def create_player_registration(attrs) do
+    %PlayerRegistration{}
+    |> PlayerRegistration.changeset(attrs)
     |> apply_action(:create)
   end
 
@@ -130,7 +157,11 @@ defmodule Pict.Games do
     Game.changeset(game, attrs)
   end
 
-  def change_signup(%Game{} = game) do
+  def change_player_registration(%Game{} = game, attrs \\ %{}) do
+    PlayerRegistration.changeset(%PlayerRegistration{}, attrs)
+  end
+
+  def change_signup(_game) do
     # doesn't support editing right now
     Signup.changeset(%Signup{}, %{})
   end
