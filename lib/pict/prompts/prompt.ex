@@ -7,8 +7,7 @@ defmodule Pict.Prompts.Prompt do
   schema "prompts" do
 
     belongs_to :game, Game
-    #TODO ordering?
-    has_many :submissions, Submission
+    has_many :submissions, Submission, preload_order: [asc: :order]
 
     timestamps()
   end
