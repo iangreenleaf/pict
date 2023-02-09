@@ -1,18 +1,15 @@
-<h1>Show Game</h1>
+<h1>Your Game: <%= @game.name %></h1>
 
+<h2>Prompt progress</h2>
 <ul>
-
-  <li>
-    <strong>Admin:</strong>
-    <%= @game.admin_id %>
-  </li>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @game.name %>
-  </li>
+  <%= for p <- @game.prompts do %>
+    <li>
+      <strong><%= prompt_display_name(p) %>:</strong>
+      <%= completed_count(p) %>
+      out of
+      <%= submissions_count(p) %>
+      completed
+    </li>
+  <% end %>
 
 </ul>
-
-<span><%= link "Edit", to: Routes.game_path(@conn, :edit, @game) %></span> |
-<span><%= link "Back", to: Routes.game_path(@conn, :index) %></span>

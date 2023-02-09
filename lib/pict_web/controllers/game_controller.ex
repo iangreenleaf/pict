@@ -1,6 +1,7 @@
 defmodule PictWeb.GameController do
   use PictWeb, :controller
 
+  alias Pict.Repo
   alias Pict.Games
   alias Pict.Games.Game
 
@@ -40,7 +41,7 @@ defmodule PictWeb.GameController do
         game = Games.register_players!(game, registration)
         conn
         |> put_flash(:info, "Game created successfully.")
-        |> redirect(to: Routes.game_path(conn, :show, game))
+        |> redirect(to: Routes.game_path(conn, :admin, game.admin_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "confirm.html", changeset: changeset)
@@ -51,8 +52,9 @@ defmodule PictWeb.GameController do
     render(conn, "pending.html")
   end
 
-  def show(conn, %{"id" => id}) do
-    game = Games.get_game!(id)
+  def admin(conn, %{"admin_id" => admin_id}) do
+    game = Games.get_game_admin!(admin_id)
+           |> Repo.preload([prompts: [submissions: [game_player: [:player]]]])
     render(conn, "show.html", game: game)
   end
 

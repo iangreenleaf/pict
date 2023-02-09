@@ -3,6 +3,7 @@ defmodule Pict.Games.Game do
   import Ecto.Changeset
   alias Pict.Accounts.Account
   alias Pict.Games.GamePlayer
+  alias Pict.Prompts.Prompt
 
   schema "games" do
     field :admin_id, Ecto.UUID, autogenerate: true
@@ -10,6 +11,7 @@ defmodule Pict.Games.Game do
     belongs_to :owner, Account
     has_many :game_players, GamePlayer, on_replace: :delete_if_exists
     has_many :players, through: [:game_players, :player]
+    has_many :prompts, Prompt
 
     timestamps()
   end
