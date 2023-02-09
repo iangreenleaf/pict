@@ -8,6 +8,7 @@ defmodule Pict.Games.Game do
   schema "games" do
     field :admin_id, Ecto.UUID, autogenerate: true
     field :name, :string
+    field :state, Ecto.Enum, values: [:pending, :started]
     belongs_to :owner, Account
     has_many :game_players, GamePlayer, on_replace: :delete_if_exists
     has_many :players, through: [:game_players, :player]

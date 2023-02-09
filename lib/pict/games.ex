@@ -64,11 +64,19 @@ defmodule Pict.Games do
       |> Game.changeset(%{})
       |> put_assoc(:game_players, game_players(attrs.player_emails))
       |> Repo.update!()
-      |> Repo.preload([:game_players, :owner])
+
+    game
+  end
+
+  def start!(game) do
+    game = game |> Repo.preload([:game_players, :owner])
 
     Prompts.initialize_prompts!(game)
 
     game
+      |> Game.changeset(%{})
+      |> put_change(:state, :started)
+      |> Repo.update!()
   end
 
   def create_game_from_signup!(attrs = %Signup{}) do

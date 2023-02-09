@@ -33,12 +33,23 @@ defmodule PictWeb.GameController do
     end
   end
 
+  def admin(conn, %{"admin_id" => admin_id}) do
+    case Games.get_game_admin!(admin_id) do
+      %{state: :pending} ->
+        redirect(conn, to: Routes.game_path(conn, :confirm, admin_id))
+
+      game ->
+        game = Repo.preload(game, [prompts: [submissions: [game_player: [:player]]]])
+        render(conn, "show.html", game: game)
+    end
+  end
+
   def start(conn, %{"admin_id" => admin_id, "player_registration" => params}) do
     game = Games.get_game_admin!(admin_id)
 
     case Games.create_player_registration(params) do
       {:ok, registration} ->
-        game = Games.register_players!(game, registration)
+        game = Games.register_players!(game, registration) |> Games.start!()
         conn
         |> put_flash(:info, "Game created successfully.")
         |> redirect(to: Routes.game_path(conn, :admin, game.admin_id))
@@ -50,12 +61,6 @@ defmodule PictWeb.GameController do
 
   def pending(conn, _params) do
     render(conn, "pending.html")
-  end
-
-  def admin(conn, %{"admin_id" => admin_id}) do
-    game = Games.get_game_admin!(admin_id)
-           |> Repo.preload([prompts: [submissions: [game_player: [:player]]]])
-    render(conn, "show.html", game: game)
   end
 
   def edit(conn, %{"id" => id}) do

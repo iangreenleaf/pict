@@ -3,5 +3,5 @@
 <h1>Game ready: <%= @game.name %></h1>
 <p>
   Your game is almost ready!
-  <%= link("Click here to invite players and start the game", to: Routes.game_path(PictWeb.Endpoint, :confirm, @game.admin_id)) %>
+  <%= link("Click here to invite players and start the game", to: Routes.game_path(PictWeb.Endpoint, :admin, @game.admin_id)) %>
 </p>
