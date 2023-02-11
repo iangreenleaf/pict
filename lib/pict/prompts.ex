@@ -31,8 +31,8 @@ defmodule Pict.Prompts do
   defp send_invites(prompts, owner) do
     for submission <- first_submissions(prompts) do
       PictWeb.Emails.UserEmail.prompt_ready(submission, owner)
+      |> Pict.Mailer.deliver()
     end
-    |> Pict.Mailer.deliver_many()
   end
 
   defp first_submissions(prompts) do
