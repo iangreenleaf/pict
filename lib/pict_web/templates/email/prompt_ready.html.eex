@@ -4,5 +4,5 @@
 
 <p>
   To accept, simply
-  <%= link("submit your first clue here", to: Routes.submission_show_path(PictWeb.Endpoint, :edit, @submission.id)) %>.
+  <%= link("submit your first clue here", to: Routes.submission_show_url(PictWeb.Endpoint, :edit, @submission.id)) %>.
 </p>

@@ -1,4 +1,4 @@
 <p>
   A new clue is waiting for you!
-  <%= link("See it and submit your entry here!", to: Routes.submission_show_path(PictWeb.Endpoint, :edit, @submission.id)) %>
+  <%= link("See it and submit your entry here!", to: Routes.submission_show_url(PictWeb.Endpoint, :edit, @submission.id)) %>
 </p>
