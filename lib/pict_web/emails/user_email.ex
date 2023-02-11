@@ -2,8 +2,8 @@ defmodule PictWeb.Emails.UserEmail do
   use Phoenix.Swoosh, view: PictWeb.EmailView, layout: {PictWeb.LayoutView, :email}
 
   defp default_from(mail) do
-    host = System.get_env("PHX_HOST") || "example.com"
-    from(mail, {"Telephone Pictionary", "pict@#{host}"})
+    from_addr = System.get_env("PHX_EMAIL_FROM") || "pict@example.com"
+    from(mail, {"Telephone Pictionary", from_addr})
   end
 
   def game_ready(game) do
