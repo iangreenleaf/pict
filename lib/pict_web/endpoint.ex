@@ -22,9 +22,11 @@ defmodule PictWeb.Endpoint do
     gzip: false,
     only: ~w(assets fonts images favicon.ico robots.txt)
 
+  # Elixir releases make the app_dir weird so just hardcode it
+  upload_path = if Mix.env() in [:dev, :test], do: Path.expand("./uploads"), else: "/app/uploads"
   plug Plug.Static,
     at: "/uploads",
-    from: Path.expand("./uploads"),
+    from: upload_path,
     gzip: false
 
   # Code reloading can be explicitly enabled under the
