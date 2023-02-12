@@ -1,4 +1,6 @@
 <p>
-  A new clue is waiting for you!
+  A new clue awaits! It's time to guess the prompt from <%= @owner_name %>.
+</p>
+<p>
   <%= link("See it and submit your entry here!", to: Routes.submission_show_url(PictWeb.Endpoint, :edit, @submission.id)) %>
 </p>

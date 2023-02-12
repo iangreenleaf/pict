@@ -9,6 +9,7 @@ defmodule Pict.Prompts do
   import Ecto.Changeset
   alias Pict.Repo
 
+  alias Pict.Games
   alias Pict.Prompts.Prompt
   alias Pict.Prompts.Submission
 
@@ -72,9 +73,14 @@ defmodule Pict.Prompts do
     case get_submission_at(prompt_id, order + 1) do
       nil -> false
       next_sub ->
-        next_sub
-        |> Repo.preload(:player)
-        |> PictWeb.Emails.UserEmail.submission_ready()
+        next_sub = Repo.preload(next_sub, [:player, prompt: [:submissions]])
+        PictWeb.Emails.UserEmail.submission_ready(%{
+          submission: next_sub,
+          starter: Games.get_game_player!(
+            get_submission_at(next_sub.prompt_id, 0).game_player_id
+          ),
+          total: next_sub.prompt.submissions |> Enum.count()
+        })
         |> Pict.Mailer.deliver()
     end
   end

@@ -14,12 +14,13 @@ defmodule PictWeb.Emails.UserEmail do
     |> render_body("game_ready.html", %{game: game})
   end
 
-  def submission_ready(submission) do
+  def submission_ready(%{submission: submission, starter: starter, total: total}) do
+    prompt_name = "#{starter.name} #{submission.order + 1}/#{total}"
     new()
     |> to(submission.player)
     |> default_from()
-    |> subject("Take your turn in Telephone Pictionary")
-    |> render_body("submission_ready.html", %{submission: submission})
+    |> subject("Take your turn in Telephone Pictionary (#{prompt_name})")
+    |> render_body("submission_ready.html", %{submission: submission, owner_name: starter.name})
   end
 
   def prompt_ready(submission, owner) do
