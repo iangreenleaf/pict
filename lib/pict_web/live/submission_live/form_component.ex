@@ -1,7 +1,7 @@
 defmodule PictWeb.SubmissionLive.FormComponent do
   use PictWeb, :live_component
 
-  import Pict.Prompts, only: [expects_drawing?: 1]
+  import Pict.Prompts, only: [expects_drawing?: 1, first_submission?: 1]
 
   alias Pict.Prompts
   alias Pict.Prompts.Submission
@@ -76,5 +76,13 @@ defmodule PictWeb.SubmissionLive.FormComponent do
       socket
       |> put_flash(:info, "Submitted, nice work!")
       |> push_redirect(to: socket.assigns.return_to)}
+  end
+
+  defp guess_label(submission) do
+    if first_submission?(submission) do
+      "Enter your clue"
+    else
+      "Enter your guess"
+    end
   end
 end

@@ -17,6 +17,9 @@ defmodule Pict.Prompts do
     Integer.is_odd(order)
   end
 
+  def first_submission?(%Submission{order: 0}), do: true
+  def first_submission?(_), do: false
+
   def initialize_prompts!(game) do
     #TODO ordering?
     prompts = for l <- 1..length(game.game_players) do
