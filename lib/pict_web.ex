@@ -45,7 +45,7 @@ defmodule PictWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {PictWeb.LayoutView, "live.html"}
+        layout: {PictWeb.LayoutView, :live}
 
       unquote(view_helpers())
     end
@@ -89,8 +89,9 @@ defmodule PictWeb do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
+      import Phoenix.Component
+
       # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
-      import Phoenix.LiveView.Helpers
       import PictWeb.LiveHelpers
 
       # Import basic rendering functionality (render, render_layout, etc)

@@ -25,5 +25,5 @@
 <% true -> %>
   <h1>You submitted:</h1>
   <.entered submission={@submission} />
-  <div><%= live_patch "Edit", to: Routes.submission_show_path(@socket, :edit, @submission), class: "button" %></div>
+  <div><.link patch={Routes.submission_show_path(@socket, :edit, @submission)} class="button">Edit</.link></div>
 <% end %>
