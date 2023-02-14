@@ -13,7 +13,11 @@ config :pict,
 # Configures the endpoint
 config :pict, PictWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: PictWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    html: PictWeb.ErrorHtml,
+    json: PictWeb.ErrorJSON,
+    layout: false
+  ],
   pubsub_server: Pict.PubSub,
   live_view: [signing_salt: "M8ek2j8l"]
 
@@ -34,12 +38,24 @@ config :waffle,
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.14.29",
+  version: "0.14.41",
   default: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
+ # Configure tailwind (the version is required)
+config :tailwind,
+  version: "3.1.8",
+  default: [
+    args: ~w(
+      --config=tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
+    ),
+    cd: Path.expand("../assets", __DIR__)
   ]
 
 # Configures Elixir's Logger

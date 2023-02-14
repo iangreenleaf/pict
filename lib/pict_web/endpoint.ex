@@ -7,7 +7,8 @@ defmodule PictWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_pict_key",
-    signing_salt: "o/ldWeFP"
+    signing_salt: "o/ldWeFP",
+    same_site: "Lax"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
@@ -20,7 +21,7 @@ defmodule PictWeb.Endpoint do
     at: "/",
     from: :pict,
     gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt)
+    only: PictWeb.static_paths()
 
   # Elixir releases make the app_dir weird so just hardcode it
   upload_path = if Mix.env() in [:dev, :test], do: Path.expand("./uploads"), else: "/app/uploads"

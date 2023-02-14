@@ -1,0 +1,7 @@
+<%= if expects_drawing?(@submission) do %>
+  <.link href={drawing_url(@submission, :original)} target="_blank">
+    <img src={drawing_url(@submission)} />
+  </.link>
+<% else %>
+  <%= @submission.text %>
+<% end %>

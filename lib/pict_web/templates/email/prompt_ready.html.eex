@@ -1,8 +1,0 @@
-<p>
-  <%= @owner.email %> has invited you to a game of Telephone Pictionary!
-</p>
-
-<p>
-  To accept, simply
-  <%= link("submit your first clue here", to: Routes.submission_show_url(PictWeb.Endpoint, :edit, @submission.id)) %>.
-</p>

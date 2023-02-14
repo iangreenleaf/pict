@@ -1,5 +1,5 @@
 <div>
-  <.form
+  <.simple_form
     let={f}
     for={@changeset}
     multipart={true}
@@ -9,17 +9,13 @@
     phx-submit="save">
 
     <%= if expects_drawing?(@submission) do %>
-      <%= label f, :drawing, "Upload your drawing" %>
-      <%= live_file_input @uploads.drawing %>
-      <%= error_tag f, :drawing %>
+      <.live_file_input upload={@uploads.drawing} label="Upload your drawing" />
     <% else %>
-      <%= label f, :text, guess_label(@submission) %>
-      <%= text_input f, :text %>
-      <%= error_tag f, :text %>
+      <.input field={{f, :text}} type="text" label={guess_label(@submission)} />
     <% end %>
 
-    <div>
-      <%= submit "Submit", phx_disable_with: "Submitting..." %>
-    </div>
-  </.form>
+    <:actions>
+      <.button phx-disable-with="Submitting...">Submit</.button>
+    </:actions>
+  </.simple_form>
 </div>

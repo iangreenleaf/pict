@@ -26,7 +26,7 @@ defmodule PictWeb.GameController do
       {:ok, signup} ->
         game = Games.create_game_from_signup!(signup)
         conn
-        |> redirect(to: Routes.game_path(conn, :pending))
+        |> redirect(to: ~p"/games/pending")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -36,7 +36,7 @@ defmodule PictWeb.GameController do
   def admin(conn, %{"admin_id" => admin_id}) do
     case Games.get_game_admin!(admin_id) do
       %{state: :pending} ->
-        redirect(conn, to: Routes.game_path(conn, :confirm, admin_id))
+        redirect(conn, to: ~p"/games/#{admin_id}/confirm")
 
       game ->
         game = Repo.preload(game, [prompts: [submissions: [game_player: [:player]]]])
@@ -52,7 +52,7 @@ defmodule PictWeb.GameController do
         game = Games.register_players!(game, registration) |> Games.start!()
         conn
         |> put_flash(:info, "Game created successfully.")
-        |> redirect(to: Routes.game_path(conn, :admin, game.admin_id))
+        |> redirect(to: ~p"/games/#{game.admin_id}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "confirm.html", changeset: changeset)
@@ -67,28 +67,5 @@ defmodule PictWeb.GameController do
     game = Games.get_game!(id)
     changeset = Games.change_game(game)
     render(conn, "edit.html", game: game, changeset: changeset)
-  end
-
-  def update(conn, %{"id" => id, "game" => game_params}) do
-    game = Games.get_game!(id)
-
-    case Games.update_game(game, game_params) do
-      {:ok, game} ->
-        conn
-        |> put_flash(:info, "Game updated successfully.")
-        |> redirect(to: Routes.game_path(conn, :show, game))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", game: game, changeset: changeset)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    game = Games.get_game!(id)
-    {:ok, _game} = Games.delete_game(game)
-
-    conn
-    |> put_flash(:info, "Game deleted successfully.")
-    |> redirect(to: Routes.game_path(conn, :index))
   end
 end

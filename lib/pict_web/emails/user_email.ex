@@ -1,9 +1,20 @@
 defmodule PictWeb.Emails.UserEmail do
-  use Phoenix.Swoosh, view: PictWeb.EmailView, layout: {PictWeb.LayoutView, :email}
+  import Swoosh.Email
 
   defp default_from(mail) do
     from_addr = System.get_env("PHX_EMAIL_FROM") || "pict@example.com"
     from(mail, {"Telephone Pictionary", from_addr})
+  end
+
+  defp render_with_layout(email, heex) do
+    html_body(
+      email,
+      render_component(PictWeb.EmailHTML.layout(%{email: email, inner_content: heex}))
+    )
+  end
+
+  defp render_component(heex) do
+    heex |> Phoenix.HTML.Safe.to_iodata() |> IO.chardata_to_string()
   end
 
   def game_ready(game) do
@@ -11,7 +22,7 @@ defmodule PictWeb.Emails.UserEmail do
     |> to(game.owner)
     |> default_from()
     |> subject("Your Telephone Pictionary game is ready: #{game.name}")
-    |> render_body("game_ready.html", %{game: game})
+    |> render_with_layout(PictWeb.EmailHTML.game_ready(%{game: game}))
   end
 
   def submission_ready(%{submission: submission, starter: starter, total: total}) do
@@ -20,7 +31,9 @@ defmodule PictWeb.Emails.UserEmail do
     |> to(submission.player)
     |> default_from()
     |> subject("Take your turn in Telephone Pictionary (#{prompt_name})")
-    |> render_body("submission_ready.html", %{submission: submission, owner_name: starter.name})
+    |> render_with_layout(PictWeb.EmailHTML.submission_ready(
+      %{submission: submission, owner_name: starter.name}
+    ))
   end
 
   def prompt_ready(submission, owner) do
@@ -28,6 +41,8 @@ defmodule PictWeb.Emails.UserEmail do
     |> to(submission.player)
     |> default_from()
     |> subject("You've been invited to play Telephone Pictionary")
-    |> render_body("prompt_ready.html", %{submission: submission, owner: owner})
+    |> render_with_layout(PictWeb.EmailHTML.prompt_ready(
+      %{submission: submission, owner: owner}
+    ))
   end
 end

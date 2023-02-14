@@ -1,5 +1,6 @@
-defmodule PictWeb.GameView do
-  use PictWeb, :view
+defmodule PictWeb.GameHTML do
+  use PictWeb, :html
+  embed_templates "../templates/game/*"
 
   alias Pict.Prompts.Prompt
   alias Pict.Prompts.Submission

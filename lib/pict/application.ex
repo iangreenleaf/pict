@@ -8,10 +8,10 @@ defmodule Pict.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Start the Ecto repository
-      Pict.Repo,
       # Start the Telemetry supervisor
       PictWeb.Telemetry,
+      # Start the Ecto repository
+      Pict.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: Pict.PubSub},
       # Start the Endpoint (http/https)

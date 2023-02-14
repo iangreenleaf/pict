@@ -1,0 +1,10 @@
+<p>
+  <%= @owner.email %> has invited you to a game of Telephone Pictionary!
+</p>
+
+<p>
+  To accept, simply
+  <.link href={url(~p"/submission/#{@submission.id}/edit")}>
+    submit your first clue here
+  </.link>.
+</p>

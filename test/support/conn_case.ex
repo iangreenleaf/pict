@@ -19,15 +19,17 @@ defmodule PictWeb.ConnCase do
 
   using do
     quote do
+      # The default endpoint for testing
+      @endpoint PictWeb.Endpoint
+
+      use PictWeb, :verified_routes
+
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
       import PictWeb.ConnCase
 
       alias PictWeb.Router.Helpers, as: Routes
-
-      # The default endpoint for testing
-      @endpoint PictWeb.Endpoint
     end
   end
 

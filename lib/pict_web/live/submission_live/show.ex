@@ -5,6 +5,8 @@ defmodule PictWeb.SubmissionLive.Show do
 
   import Pict.Prompts, only: [expects_drawing?: 1]
 
+  embed_templates("partials/*")
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
@@ -21,18 +23,6 @@ defmodule PictWeb.SubmissionLive.Show do
       |> assign(:submission, submission)
       |> assign(:clue, Prompts.get_clue_for(submission))
     }
-  end
-
-  def entered(assigns) do
-    ~H"""
-    <%= if expects_drawing?(@submission) do %>
-      <%= link to: drawing_url(@submission, :original), target: "_blank" do %>
-        <%= img_tag drawing_url(@submission) %>
-      <% end %>
-    <% else %>
-      <%= @submission.text %>
-    <% end %>
-    """
   end
 
   def drawing_url(submission, size \\ :large) do
