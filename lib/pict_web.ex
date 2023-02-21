@@ -51,6 +51,7 @@ defmodule PictWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import PictWeb.CoreComponents
+      import PictWeb.HouseComponents
       import PictWeb.Gettext
 
       # Shortcut for generating JS commands

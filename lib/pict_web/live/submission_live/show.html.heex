@@ -16,8 +16,12 @@
 
 <% @live_action in [:edit] -> %>
   <%= unless is_nil(@clue) do %>
-    <h1>Your clue is:</h1>
-    <.entered submission={@clue} />
+    <.card>
+      <:title>
+        The clue
+      </:title>
+      <.entered submission={@clue} />
+    </.card>
   <% end %>
 
   <.live_component
@@ -30,26 +34,24 @@
 
 <% true -> %>
   <%= unless is_nil(@clue) do %>
-    <div class="drop-shadow-md">
-      <h1 class="block border rounded-md border-b-0 rounded-b-none border-teal-600 bg-teal-600 text-white p-1 text-lg font-medium text-center">The clue</h1>
-      <div class="p-1 border rounded-md border-t-0 rounded-t-none border-neutral-400 bg-white text-lg font-medium text-center"><.entered submission={@clue} /></div>
-    </div>
+    <.card>
+      <:title>
+        The clue
+      </:title>
+      <.entered submission={@clue} />
+    </.card>
   <% end %>
-    <div class="drop-shadow-md">
-      <div class="block border rounded-md border-b-0 rounded-b-none border-teal-600 bg-teal-600 text-white p-1 text-lg font-medium text-center">
-        You submitted
-      </div>
-      <div class="p-1 border rounded-md border-t-0 rounded-t-none border-neutral-400 bg-white text-lg font-medium text-center"><.entered submission={@submission} />
-        <.link
-          patch={~p"/submissions/#{@submission.id}/edit"}
-          class="inline-flex items-center space-x-1 px-2 rounded-full border border-teal-600 text-sm font-normal text-teal-600 hover:bg-teal-600 hover:text-white focus:ring focus:ring-teal-600 focus:ring-offset-2"
-        >
-          <Heroicons.pencil_square class="inline h-3 align-middle" />
-<span class="align-middle">
-          Edit
-</span>
-        </.link>
-      </div>
-    </div>
+  <.card>
+    <:title>
+      You submitted
+    </:title>
+    <.entered submission={@submission} />
+    <.small_button
+      patch={~p"/submissions/#{@submission.id}/edit"}
+>
+      <Heroicons.pencil_square class="inline h-3 align-middle" />
+      <span>Edit</span>
+    </.small_button>
+  </.card>
 <% end %>
 </div>
