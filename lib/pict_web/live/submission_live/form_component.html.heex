@@ -1,5 +1,5 @@
 <div>
-  <.simple_form
+  <.form
     let={f}
     for={@changeset}
     multipart={true}
@@ -8,14 +8,16 @@
     phx-change="validate"
     phx-submit="save">
 
-    <%= if expects_drawing?(@submission) do %>
-      <.live_file_input upload={@uploads.drawing} label="Upload your drawing" />
-    <% else %>
-      <.input field={{f, :text}} type="text" label={guess_label(@submission)} />
-    <% end %>
+    <div class="space-y-8 bg-white mt-6">
+      <%= if expects_drawing?(@submission) do %>
+        <.live_file_input upload={@uploads.drawing} label="Upload your drawing" />
+      <% else %>
+        <.input field={{f, :text}} type="text" label={guess_label(@submission)} />
+      <% end %>
 
-    <:actions>
-      <.button phx-disable-with="Submitting...">Submit</.button>
-    </:actions>
-  </.simple_form>
+      <div>
+        <.button phx-disable-with="Submitting...">Submit</.button>
+      </div>
+    </div>
+  </.form>
 </div>

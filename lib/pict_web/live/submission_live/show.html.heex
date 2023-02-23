@@ -24,13 +24,18 @@
     </.card>
   <% end %>
 
-  <.live_component
-    module={PictWeb.SubmissionLive.FormComponent}
-    id={@submission.id}
-    action={@live_action}
-    submission={@submission}
-    return_to={~p"/submissions/#{@submission.id}"}
-  />
+  <.card>
+    <:title>
+      Your submission
+    </:title>
+    <.live_component
+      module={PictWeb.SubmissionLive.FormComponent}
+      id={@submission.id}
+      action={@live_action}
+      submission={@submission}
+      return_to={~p"/submissions/#{@submission.id}"}
+    />
+  </.card>
 
 <% true -> %>
   <%= unless is_nil(@clue) do %>

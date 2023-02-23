@@ -20,7 +20,7 @@ defmodule PictWeb.HouseComponents do
       <div class="block border rounded-md border-b-0 rounded-b-none border-teal-600 bg-teal-600 text-white p-1 text-lg font-medium text-center">
         <%= render_slot(@title) %>
       </div>
-      <div class="p-1 border rounded-md border-t-0 rounded-t-none border-neutral-400 bg-white text-lg font-medium text-center">
+      <div class="p-4 border rounded-md border-t-0 rounded-t-none border-neutral-400 bg-white text-lg font-medium text-center">
         <%= render_slot(@inner_block) %>
       </div>
     </div>
@@ -28,7 +28,7 @@ defmodule PictWeb.HouseComponents do
   end
 
   @doc """
-  Lil' button
+  Lil' link-based button that can work with liveview
   """
 
   attr :type, :string, default: nil
