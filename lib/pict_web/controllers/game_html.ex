@@ -20,6 +20,23 @@ defmodule PictWeb.GameHTML do
     name || email
   end
 
+  def rotated_submissions(%Prompt{} = prompt, player_index) do
+    case player_index[List.first(prompt.submissions).game_player_id] do
+      0 -> prompt.submissions
+      offset ->
+        Enum.slice(prompt.submissions, (-offset)..-1) ++ Enum.slice(prompt.submissions, 0..(-offset-1))
+    end
+  end
+
+  def current_active_submission(%Prompt{submissions: submissions}) do
+    Enum.find(submissions, fn sub -> !sub.completed end)
+  end
+
+  def submission_css(submission, active_submission_for_prompt)
+  def submission_css(s, s), do: "bg-amber-300"
+  def submission_css(%{completed: true}, _), do: "bg-emerald-400"
+  def submission_css(%{completed: false}, _), do: "bg-rose-400"
+
   def submissions_count(%Prompt{submissions: submissions}) do
     length(submissions)
   end

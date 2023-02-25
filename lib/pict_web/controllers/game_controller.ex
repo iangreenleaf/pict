@@ -39,8 +39,9 @@ defmodule PictWeb.GameController do
         redirect(conn, to: ~p"/games/#{admin_id}/confirm")
 
       game ->
-        game = Repo.preload(game, [prompts: [submissions: [game_player: [:player]]]])
-        render(conn, "show.html", game: game)
+        game = Repo.preload(game, [:game_players, prompts: [submissions: [game_player: [:player]]]])
+        player_index = (for p <- game.game_players, do: p.id) |> Enum.with_index() |> Enum.into(%{})
+        render(conn, "show.html", game: game, player_index: player_index)
     end
   end
 

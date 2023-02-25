@@ -1,15 +1,30 @@
-<h1>Your Game: <%= @game.name %></h1>
+<.header>
+  Your Game: <%= @game.name %>
+</.header>
 
-<h2>Prompt progress</h2>
-<ul>
+<table class="mt-4">
+  <tr class="border-white border-y-4">
+    <th />
+    <%= for gp <- @game.game_players do %>
+      <th class="">
+        <span class="inline-block -rotate-90"><%= gp.name %></span>
+      </th>
+    <% end %>
+  </tr>
   <%= for p <- @game.prompts do %>
-    <li>
-      <strong><%= prompt_display_name(p) %>:</strong>
-      <%= completed_count(p) %>
-      out of
-      <%= submissions_count(p) %>
-      completed
-    </li>
+    <tr class="border-white border-y-4">
+      <th class="">
+        <%= prompt_display_name(p) %>
+        <br />
+        (<%= completed_count(p) %> of <%= submissions_count(p) %>)
+      </th>
+      <% active = current_active_submission(p) %>
+      <%= for s <- rotated_submissions(p, @player_index) do %>
+        <td class="border-white border-x-2">
+          <div class={"h-8 w-8 rounded-md #{submission_css(s, active)}"}>
+          </div>
+        </td>
+      <% end %>
+    </tr>
   <% end %>
-
-</ul>
+</table>
