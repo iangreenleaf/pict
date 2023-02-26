@@ -21,7 +21,6 @@ defmodule Pict.Prompts do
   def first_submission?(_), do: false
 
   def initialize_prompts!(game) do
-    #TODO ordering?
     prompts = for l <- 1..length(game.game_players) do
       {b, a} = Enum.split(game.game_players, l)
       create_prompt!(game: game, game_players: a ++ b)

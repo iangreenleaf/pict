@@ -10,7 +10,9 @@ defmodule Pict.Games.Game do
     field :name, :string
     field :state, Ecto.Enum, values: [:pending, :started]
     belongs_to :owner, Account
-    has_many :game_players, GamePlayer, on_replace: :delete_if_exists
+    has_many :game_players, GamePlayer,
+      on_replace: :delete_if_exists,
+      preload_order: [asc: :order]
     has_many :players, through: [:game_players, :player]
     has_many :prompts, Prompt
 
