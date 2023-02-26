@@ -3,11 +3,16 @@
 </.header>
 
 <table class="mt-4">
+  <colgroup>
+    <%= for _ <- @game.game_players do %>
+      <col class="w-8 max-w-sm" />
+    <% end %>
+  </colgroup>
   <tr class="border-white border-y-4">
     <th />
     <%= for gp <- @game.game_players do %>
-      <th class="">
-        <span class="inline-block -rotate-90"><%= gp.name %></span>
+      <th class="align-bottom" style="writing-mode:sideways-lr">
+        <span class=""><%= gp.name %></span>
       </th>
     <% end %>
   </tr>
