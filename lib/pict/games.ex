@@ -9,6 +9,7 @@ defmodule Pict.Games do
 
   alias Pict.Accounts
   alias Pict.Prompts
+  alias Pict.Prompts.Prompt
   alias Pict.Games.Game
   alias Pict.Games.GamePlayer
   alias Pict.Games.Signup
@@ -43,6 +44,24 @@ defmodule Pict.Games do
   """
   def get_game!(id), do: Repo.get!(Game, id)
   def get_game_admin!(admin_id), do: Repo.get_by!(Game, admin_id: admin_id)
+
+  def get_game_for_admin(admin_id) do
+    prompts_query = from(
+      p in Prompt,
+      join: player in assoc(p, :owner),
+      order_by: player.order
+    )
+
+    from(
+      g in Game,
+      where: g.admin_id == ^admin_id,
+      preload: [
+        :game_players,
+        prompts: ^{prompts_query, [submissions: [game_player: [:player]]]}
+      ]
+    )
+    |> Repo.one()
+  end
 
   @doc """
   Creates a game.

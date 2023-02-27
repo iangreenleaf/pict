@@ -34,12 +34,11 @@ defmodule PictWeb.GameController do
   end
 
   def admin(conn, %{"admin_id" => admin_id}) do
-    case Games.get_game_admin!(admin_id) do
+    case Games.get_game_for_admin(admin_id) do
       %{state: :pending} ->
         redirect(conn, to: ~p"/games/#{admin_id}/confirm")
 
       game ->
-        game = Repo.preload(game, [:game_players, prompts: [submissions: [game_player: [:player]]]])
         player_index = (for p <- game.game_players, do: p.id) |> Enum.with_index() |> Enum.into(%{})
         render(conn, "show.html", game: game, player_index: player_index)
     end
