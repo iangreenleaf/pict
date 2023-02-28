@@ -17,8 +17,6 @@ defmodule PictWeb.Router do
   scope "/", PictWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
-
     live "/submissions/:id", SubmissionLive.Show, :show
     live "/submissions/:id/edit", SubmissionLive.Show, :edit
     resources "/games", GameController, only: [:new, :create]
