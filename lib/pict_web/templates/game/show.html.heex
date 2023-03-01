@@ -4,6 +4,7 @@
 
 <table class="mt-4">
   <colgroup>
+    <col />
     <%= for _ <- @game.game_players do %>
       <col class="w-8 max-w-sm" />
     <% end %>
@@ -11,17 +12,15 @@
   <tr class="border-white border-y-4">
     <th />
     <%= for gp <- @game.game_players do %>
-      <th class="align-bottom" style="writing-mode:sideways-lr">
+      <th class="align-bottom pb-2" style="writing-mode:sideways-lr">
         <span class=""><%= gp.name %></span>
       </th>
     <% end %>
   </tr>
   <%= for p <- @game.prompts do %>
     <tr class="border-white border-y-4">
-      <th class="">
+      <th class="text-right pr-2">
         <%= prompt_display_name(p) %>
-        <br />
-        (<%= completed_count(p) %> of <%= submissions_count(p) %>)
       </th>
       <% active = current_active_submission(p) %>
       <%= for s <- rotated_submissions(p, @player_index) do %>
