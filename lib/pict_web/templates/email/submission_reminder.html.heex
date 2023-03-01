@@ -1,5 +1,6 @@
 <p>
-  Time to get drawing! The clue from <%= @owner_name %> is still waiting for your submission.
+  <%= @message %>
+  The clue from <%= @owner_name %> is still waiting for your submission.
 </p>
 <p>
   <.link href={url(~p"/submissions/#{@submission.id}/edit")}>

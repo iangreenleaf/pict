@@ -43,8 +43,19 @@ defmodule PictWeb.Emails.UserEmail do
     |> default_from()
     |> subject("Your turn is waiting for you in Telephone Pictionary: (#{prompt_name})")
     |> render_with_layout(PictWeb.EmailHTML.submission_reminder(
-      %{submission: submission, owner_name: starter.name}
+      %{submission: submission, owner_name: starter.name, message: reminder_message()}
     ))
+  end
+
+  defp reminder_message do
+    Enum.random([
+      "Fuck you doin?",
+      "You're late and everyone has noticed. How embarrassing!",
+      "Did you lose your pencil?",
+      "Clock's ticking, pal!",
+      "You're not trying to draw \"heat death of the universe\".",
+      "Must go faster!"
+    ])
   end
 
   def prompt_ready(submission, owner) do
