@@ -56,7 +56,7 @@ defmodule Pict.Games do
       g in Game,
       where: g.admin_id == ^admin_id,
       preload: [
-        :game_players,
+        game_players: [:player],
         prompts: ^{prompts_query, [submissions: [game_player: [:player]]]}
       ]
     )

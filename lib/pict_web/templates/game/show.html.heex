@@ -13,7 +13,7 @@
     <th />
     <%= for gp <- @game.game_players do %>
       <th class="align-bottom pb-2" style="writing-mode:sideways-lr">
-        <span class=""><%= gp.name %></span>
+        <span class=""><%= display_name(gp) %></span>
       </th>
     <% end %>
   </tr>

@@ -16,7 +16,9 @@ defmodule PictWeb.GameHTML do
     List.first(submissions)
   end
 
-  defp display_name(%Submission{game_player: %GamePlayer{name: name, player: %Account{email: email}}}) do
+  defp display_name(%Submission{game_player: game_player}), do: display_name(game_player)
+
+  defp display_name(%GamePlayer{name: name, player: %Account{email: email}}) do
     name || email
   end
 
