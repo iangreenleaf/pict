@@ -3,6 +3,7 @@ defmodule PictWeb.GameController do
 
   alias Pict.Repo
   alias Pict.Games
+  alias Pict.Prompts
   alias Pict.Games.Game
 
   def index(conn, _params) do
@@ -42,6 +43,19 @@ defmodule PictWeb.GameController do
         player_index = (for p <- game.game_players, do: p.id) |> Enum.with_index() |> Enum.into(%{})
         render(conn, "show.html", game: game, player_index: player_index)
     end
+  end
+
+  def reminder(conn, %{"admin_id" => admin_id, "prompt_id" => prompt_id}) do
+    case Prompts.get_first_unfinished_for_admin(admin_id, prompt_id) do
+      nil ->
+        conn
+
+      submission ->
+        Prompts.send_reminder(submission)
+        conn
+        |> put_flash(:info, "Reminder sent.")
+    end
+    |> redirect(to: ~p"/games/#{admin_id}")
   end
 
   def start(conn, %{"admin_id" => admin_id, "player_registration" => params}) do

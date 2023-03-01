@@ -8,6 +8,7 @@
     <%= for _ <- @game.game_players do %>
       <col class="w-8 max-w-sm" />
     <% end %>
+    <col />
   </colgroup>
   <tr class="border-white border-y-4">
     <th />
@@ -29,6 +30,15 @@
           </div>
         </td>
       <% end %>
+      <td class="text-left pl-2">
+        <.small_button
+          method="post"
+          href={~p"/games/#{@game.admin_id}/prompts/#{p.id}/reminder"}
+        >
+          <Heroicons.envelope class="inline h-3 align-middle" />
+          <span>Reminder</span>
+        </.small_button>
+      </td>
     </tr>
   <% end %>
 </table>

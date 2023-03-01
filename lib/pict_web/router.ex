@@ -24,6 +24,7 @@ defmodule PictWeb.Router do
     get "/games/:admin_id", GameController, :admin
     get "/games/:admin_id/confirm", GameController, :confirm
     post "/games/:admin_id/start", GameController, :start
+    post "/games/:admin_id/prompts/:prompt_id/reminder", GameController, :reminder
   end
 
   # Other scopes may use custom stacks.

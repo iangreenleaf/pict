@@ -95,6 +95,30 @@ defmodule Pict.Prompts do
     )
   end
 
+  def get_first_unfinished_for_admin(game_admin_id, prompt_id) do
+    from(
+      s in Submission,
+      join: p in assoc(s, :prompt),
+      join: _g in assoc(p, :game),
+      where: s.completed == false and p.id == ^prompt_id,
+      order_by: s.order,
+      limit: 1,
+      preload: [:player, prompt: [:submissions]]
+    )
+    |> Repo.one()
+  end
+
+  def send_reminder(submission) do
+    PictWeb.Emails.UserEmail.submission_reminder(%{
+      submission: submission,
+      starter: Games.get_game_player!(
+        get_submission_at(submission.prompt_id, 0).game_player_id
+      ),
+      total: submission.prompt.submissions |> Enum.count()
+    })
+    |> Pict.Mailer.deliver()
+  end
+
   @doc """
   Returns the list of prompts.
 
