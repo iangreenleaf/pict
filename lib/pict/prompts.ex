@@ -111,12 +111,17 @@ defmodule Pict.Prompts do
   def other_undone_submissions(%Submission{id: id, game_player_id: game_player_id}) do
     from(
       s in Submission,
-      join: gp in assoc(s, :game_player),
       join: prev in Submission,
       on: prev.prompt_id == s.prompt_id and prev.order == s.order - 1,
-      where: s.id != ^id and gp.id == ^game_player_id,
+      join: prompt in assoc(s, :prompt),
+      join: starter in assoc(prompt, :owner),
+      join: all_submissions in Submission,
+      on: all_submissions.prompt_id == s.prompt_id,
+      where: s.id != ^id and s.game_player_id == ^game_player_id,
       where: prev.completed == true and s.completed == false,
+      select: %{id: s.id, order: s.order, starter_name: starter.name, total: count(all_submissions.id)},
       order_by: s.order,
+      group_by: [s.id, starter.id],
       limit: 3
     )
     |> Repo.all()

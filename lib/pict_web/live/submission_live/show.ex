@@ -2,8 +2,6 @@ defmodule PictWeb.SubmissionLive.Show do
   use PictWeb, :live_view
 
   alias Pict.Prompts
-  alias Pict.Games
-  alias Pict.Repo
 
   import Pict.Prompts, only: [expects_drawing?: 1]
 
@@ -35,11 +33,7 @@ defmodule PictWeb.SubmissionLive.Show do
   defp page_title(:show), do: "Show Submission"
   defp page_title(:edit), do: "Edit Submission"
 
-  defp prompt_name(submission) do
-    starter = Games.get_game_player!(
-      Prompts.get_submission_at(submission.prompt_id, 0).game_player_id
-    )
-    total = Repo.preload(submission, [:player, prompt: [:submissions]]).prompt.submissions |> Enum.count()
-    "#{starter.name} #{submission.order + 1}/#{total}"
+  defp prompt_name(%{starter_name: name, order: order, total: total}) do
+    "#{name} #{order + 1}/#{total}"
   end
 end
