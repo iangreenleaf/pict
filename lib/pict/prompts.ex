@@ -87,7 +87,7 @@ defmodule Pict.Prompts do
     end
   end
 
-  defp get_submission_at(prompt_id, order) do
+  def get_submission_at(prompt_id, order) do
     Repo.get_by(
       Submission,
       prompt_id: prompt_id,
@@ -106,6 +106,20 @@ defmodule Pict.Prompts do
       preload: [:player, prompt: [:submissions]]
     )
     |> Repo.one()
+  end
+
+  def other_undone_submissions(%Submission{id: id, game_player_id: game_player_id}) do
+    from(
+      s in Submission,
+      join: gp in assoc(s, :game_player),
+      join: prev in Submission,
+      on: prev.prompt_id == s.prompt_id and prev.order == s.order - 1,
+      where: s.id != ^id and gp.id == ^game_player_id,
+      where: prev.completed == true and s.completed == false,
+      order_by: s.order,
+      limit: 3
+    )
+    |> Repo.all()
   end
 
   def send_reminder(submission) do

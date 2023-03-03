@@ -11,13 +11,20 @@ defmodule PictWeb.HouseComponents do
   A card component that we use as a page building block.
   """
 
+  # Gotta be this way so the tailwind compiler catches the full class names
+  attr :color, :string, default: "bg-teal-600 border-teal-600"
+
   slot :inner_block, required: true
   slot :title, required: true
 
   def card(assigns) do
     ~H"""
     <div class="drop-shadow-md">
-      <div class="block border rounded-md border-b-0 rounded-b-none border-teal-600 bg-teal-600 text-white p-1 text-lg font-medium text-center">
+      <div class={[
+        "block border rounded-md border-b-0 rounded-b-none",
+        "border-#{@color} #{@color}",
+        "text-white p-1 text-lg font-medium text-center"
+      ]}>
         <%= render_slot(@title) %>
       </div>
       <div class="p-4 border rounded-md border-t-0 rounded-t-none border-neutral-400 bg-white text-lg font-medium text-center">
