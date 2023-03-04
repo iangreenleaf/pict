@@ -75,13 +75,11 @@ defmodule Pict.Prompts do
     case get_submission_at(prompt_id, order + 1) do
       nil -> false
       next_sub ->
-        next_sub = Repo.preload(next_sub, [:player, prompt: [:submissions]])
+        %{starter_name: starter_name, total: total} = get_submission_name_details(next_sub)
         PictWeb.Emails.UserEmail.submission_ready(%{
-          submission: next_sub,
-          starter: Games.get_game_player!(
-            get_submission_at(next_sub.prompt_id, 0).game_player_id
-          ),
-          total: next_sub.prompt.submissions |> Enum.count()
+          submission: Repo.preload(next_sub, [:player]),
+          starter_name: starter_name,
+          total: total
         })
         |> Pict.Mailer.deliver()
     end
@@ -93,6 +91,20 @@ defmodule Pict.Prompts do
       prompt_id: prompt_id,
       order: order
     )
+  end
+
+  def get_submission_name_details(%Submission{id: id, game_player_id: game_player_id}) do
+    from(
+      s in Submission,
+      join: prompt in assoc(s, :prompt),
+      join: starter in assoc(prompt, :owner),
+      join: all_submissions in Submission,
+      on: all_submissions.prompt_id == s.prompt_id,
+      where: s.id == ^id,
+      select: %{starter_name: starter.name, total: count(all_submissions.id)},
+      group_by: [s.id, starter.id]
+    )
+    |> Repo.one()
   end
 
   def get_first_unfinished_for_admin(game_admin_id, prompt_id) do
@@ -128,12 +140,12 @@ defmodule Pict.Prompts do
   end
 
   def send_reminder(submission) do
+    %{starter_name: starter_name, total: total} = get_submission_name_details(submission)
+
     PictWeb.Emails.UserEmail.submission_reminder(%{
       submission: submission,
-      starter: Games.get_game_player!(
-        get_submission_at(submission.prompt_id, 0).game_player_id
-      ),
-      total: submission.prompt.submissions |> Enum.count()
+      starter_name: starter_name,
+      total: total
     })
     |> Pict.Mailer.deliver()
   end

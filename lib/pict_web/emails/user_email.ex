@@ -25,25 +25,25 @@ defmodule PictWeb.Emails.UserEmail do
     |> render_with_layout(PictWeb.EmailHTML.game_ready(%{game: game}))
   end
 
-  def submission_ready(%{submission: submission, starter: starter, total: total}) do
-    prompt_name = "#{starter.name} #{submission.order + 1}/#{total}"
+  def submission_ready(%{submission: submission, starter_name: starter_name, total: total}) do
+    prompt_name = "#{starter_name} #{submission.order + 1}/#{total}"
     new()
     |> to(submission.player)
     |> default_from()
     |> subject("Take your turn in Telephone Pictionary (#{prompt_name})")
     |> render_with_layout(PictWeb.EmailHTML.submission_ready(
-      %{submission: submission, owner_name: starter.name}
+      %{submission: submission, owner_name: starter_name}
     ))
   end
 
-  def submission_reminder(%{submission: submission, starter: starter, total: total}) do
-    prompt_name = "#{starter.name} #{submission.order + 1}/#{total}"
+  def submission_reminder(%{submission: submission, starter_name: starter_name, total: total}) do
+    prompt_name = "#{starter_name} #{submission.order + 1}/#{total}"
     new()
     |> to(submission.player)
     |> default_from()
     |> subject("Your turn is waiting for you in Telephone Pictionary: (#{prompt_name})")
     |> render_with_layout(PictWeb.EmailHTML.submission_reminder(
-      %{submission: submission, owner_name: starter.name, message: reminder_message()}
+      %{submission: submission, owner_name: starter_name, message: reminder_message()}
     ))
   end
 
