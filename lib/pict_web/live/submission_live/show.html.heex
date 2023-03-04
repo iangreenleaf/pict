@@ -1,4 +1,9 @@
 <div class="space-y-4">
+
+<.header>
+  <%= @name %>
+</.header>
+
 <%= cond do %>
 <%= is_nil(@submission.game_player.name) -> %>
   <.header>
