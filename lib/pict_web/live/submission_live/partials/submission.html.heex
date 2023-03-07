@@ -1,0 +1,27 @@
+<div class="space-y-4">
+  <.header>
+    <%= @name %>
+  </.header>
+
+  <%= unless is_nil(@clue) do %>
+    <.card>
+      <:title>
+        The clue
+      </:title>
+      <.entered submission={@clue} />
+    </.card>
+  <% end %>
+  <.card>
+    <:title>
+      You submitted
+    </:title>
+    <.entered submission={@submission} />
+    <.small_button
+      patch={~p"/submissions/#{@submission.id}/edit"}
+>
+      <Heroicons.pencil_square class="inline h-3 align-middle" />
+      <span>Edit</span>
+    </.small_button>
+  </.card>
+  <.next_steps next_submissions={@next_submissions} />
+</div>

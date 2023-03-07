@@ -1,0 +1,28 @@
+<div class="space-y-4">
+  <.header>
+    <%= @name %>
+  </.header>
+
+  <%= unless is_nil(@clue) do %>
+    <.card>
+      <:title>
+        The clue
+      </:title>
+      <.entered submission={@clue} />
+    </.card>
+  <% end %>
+
+  <.card>
+    <:title>
+      Your submission
+    </:title>
+    <.live_component
+      module={PictWeb.SubmissionLive.FormComponent}
+      id={@submission.id}
+      action={@live_action}
+      submission={@submission}
+      return_to={~p"/submissions/#{@submission.id}"}
+    />
+  </.card>
+  <.next_steps next_submissions={@next_submissions} />
+</div>

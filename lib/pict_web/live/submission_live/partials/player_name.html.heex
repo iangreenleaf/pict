@@ -1,0 +1,14 @@
+<div class="space-y-4">
+  <.header>
+    Please enter your name
+    <:subtitle>This will be shown to other players.</:subtitle>
+  </.header>
+
+  <.live_component
+    module={PictWeb.SubmissionLive.GamePlayerComponent}
+    id={@submission.game_player.id}
+    action={@live_action}
+    game_player={@submission.game_player}
+    return_to={~p"/submissions/#{@submission.id}/edit"}
+  />
+</div>

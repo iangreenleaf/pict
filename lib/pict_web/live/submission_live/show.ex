@@ -28,6 +28,18 @@ defmodule PictWeb.SubmissionLive.Show do
     }
   end
 
+  def render(%{submission: %{game_player: %{name: nil }}} = assigns) do
+    player_name(assigns)
+  end
+
+  def render(%{live_action: :edit} = assigns) do
+    edit(assigns)
+  end
+
+  def render(assigns) do
+    submission(assigns)
+  end
+
   def drawing_url(submission, size \\ :large) do
     Pict.Drawing.url({submission.drawing, submission}, size)
   end

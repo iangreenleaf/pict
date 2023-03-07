@@ -1,0 +1,14 @@
+<%= unless Enum.empty?(@next_submissions) do %>
+  <.card color="bg-gray-600 border-gray-600">
+    <:title>
+      Try these clues next
+    </:title>
+    <ul class="space-y-2">
+    <%= for s <- @next_submissions do %>
+      <li><a href={~p"/submissions/#{s.id}/edit"} class="block text-teal-700 underline decoration-dotted">
+        <%= prompt_name(s) %>
+      </a></li>
+    <% end %>
+    </ul>
+  </.card>
+<% end %>
