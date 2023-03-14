@@ -3,6 +3,8 @@
 </.header>
 
 <table class="mt-4">
+  <caption class="font-semibold">Player</caption>
+  <caption class="absolute -rotate-90 top-1/2 font-semibold text-zinc-500">Prompt</caption>
   <colgroup>
     <col />
     <%= for _ <- @game.game_players do %>
@@ -14,14 +16,14 @@
     <th />
     <%= for gp <- @game.game_players do %>
       <th class="align-bottom pb-2" style="writing-mode:sideways-lr">
-        <span class=""><%= display_name(gp) %></span>
+        <span class="font-semibold"><%= display_name(gp) %></span>
       </th>
     <% end %>
   </tr>
   <%= for p <- @game.prompts do %>
     <tr class="border-white border-y-4">
       <th class="text-right pr-2">
-        <%= prompt_display_name(p) %>
+        <span class="text-zinc-500 font-semibold"><%= prompt_display_name(p) %></span>
       </th>
       <% active = current_active_submission(p) %>
       <%= for s <- rotated_submissions(p, @player_index) do %>
