@@ -3,15 +3,25 @@
 </.header>
 
 <table class="mt-4">
-  <caption class="font-semibold">Player</caption>
-  <caption class="absolute -rotate-90 top-1/2 font-semibold text-zinc-500">Prompt</caption>
   <colgroup>
+    <col class="w-8" />
     <col />
     <%= for _ <- @game.game_players do %>
       <col class="w-8 max-w-sm" />
     <% end %>
     <col />
   </colgroup>
+  <tr class="">
+    <th />
+    <th colspan={ 1 + length(@game.game_players) }>
+      Player
+    </th>
+  </tr>
+  <tr class="">
+    <th style="writing-mode:sideways-lr" class="text-zinc-500" rowspan={ 2 + length(@game.game_players) }>
+      Prompt
+    </th>
+  </tr>
   <tr class="border-white border-y-4">
     <th />
     <%= for gp <- @game.game_players do %>
