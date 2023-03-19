@@ -12,23 +12,22 @@
     <col />
   </colgroup>
   <tr class="">
-    <th />
-    <th colspan={ 1 + length(@game.game_players) }>
+    <th colspan="2" rowspan="2" />
+    <th colspan={ length(@game.game_players) }>
       Player
     </th>
   </tr>
-  <tr class="">
-    <th style="writing-mode:sideways-lr" class="text-zinc-500" rowspan={ 2 + length(@game.game_players) }>
-      Prompt
-    </th>
-  </tr>
   <tr class="border-white border-y-4">
-    <th />
     <%= for gp <- @game.game_players do %>
       <th class="align-bottom pb-2" style="writing-mode:sideways-lr">
         <span class="font-semibold"><%= display_name(gp) %></span>
       </th>
     <% end %>
+  </tr>
+  <tr class="">
+    <th style="writing-mode:sideways-lr" class="w-8 text-zinc-500" rowspan={ 1 + length(@game.game_players) }>
+      Prompt
+    </th>
   </tr>
   <%= for p <- @game.prompts do %>
     <tr class="border-white border-y-4">
