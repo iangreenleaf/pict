@@ -41,7 +41,13 @@ defmodule PictWeb.GameController do
 
       game ->
         player_index = (for p <- game.game_players, do: p.id) |> Enum.with_index() |> Enum.into(%{})
-        render(conn, "show.html", game: game, player_index: player_index)
+        render(
+          conn,
+          "show.html",
+          game: game,
+          player_index: player_index,
+          submission_stats: Games.submission_stats(game)
+        )
     end
   end
 

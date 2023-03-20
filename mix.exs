@@ -55,7 +55,8 @@ defmodule Pict.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:waffle, "~> 1.1"},
-      {:waffle_ecto, "~> 0.0"}
+      {:waffle_ecto, "~> 0.0"},
+      {:math, "~> 0.6.0"}
     ]
   end
 

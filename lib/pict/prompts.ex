@@ -85,6 +85,10 @@ defmodule Pict.Prompts do
     end
   end
 
+  def submissions_remaining(%Prompt{ submissions: submissions }) do
+    Enum.count(submissions, fn s -> !s.completed end)
+  end
+
   def get_submission_at(prompt_id, order) do
     Repo.get_by(
       Submission,

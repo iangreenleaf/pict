@@ -63,6 +63,14 @@ defmodule Pict.Games do
     |> Repo.one()
   end
 
+  def submission_stats(%Game{ prompts: prompts }) do
+    remaining = Enum.map(prompts, &Prompts.submissions_remaining/1)
+    %{
+      max_remaining: Enum.max(remaining),
+      median_remaining: Math.Enum.median(remaining),
+    }
+  end
+
   @doc """
   Creates a game.
 
