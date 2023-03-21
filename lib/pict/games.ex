@@ -64,10 +64,25 @@ defmodule Pict.Games do
   end
 
   def submission_stats(%Game{ prompts: prompts }) do
-    remaining = Enum.map(prompts, &Prompts.submissions_remaining/1)
+    remaining_each_prompt = Enum.map(prompts, fn p ->
+      remain = Prompts.submissions_remaining(p)
+      active_player_id = Enum.find_value(p.submissions, fn s ->
+        unless s.completed, do: s.game_player_id
+      end)
+      {active_player_id, remain}
+    end)
+    remaining = Enum.map(remaining_each_prompt, &elem(&1, 1))
+    remaining_by_player =
+      remaining_each_prompt
+      |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))
+      |> Map.drop([nil])
+      |> Map.new(fn {player_id, remainings} -> {player_id, Enum.sum(remainings)} end)
+
     %{
       max_remaining: Enum.max(remaining),
       median_remaining: Math.Enum.median(remaining),
+      remaining_by_player: remaining_by_player,
+      max_remaining_by_player: Enum.max(Map.values(remaining_by_player)),
     }
   end
 

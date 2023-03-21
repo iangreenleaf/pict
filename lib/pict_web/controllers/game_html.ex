@@ -35,6 +35,27 @@ defmodule PictWeb.GameHTML do
     Enum.find(submissions, fn sub -> !sub.completed end)
   end
 
+  def player_css(%{id: player_id}, stats) do
+    remaining = Map.get(stats.remaining_by_player, player_id, 0)
+    # Do it this way so we make all CSS explicit for Tailwind
+    colors = ~W[
+      bg-white
+      bg-rose-100
+      bg-rose-200
+      bg-rose-300
+      bg-rose-400
+      bg-rose-500
+      bg-rose-600
+      bg-rose-700
+      bg-rose-800
+    ]
+    adj_delta = remaining / ( stats.max_remaining_by_player / (length(colors) - 1) )
+    idx = round(adj_delta)
+
+    colors
+    |> Enum.at(idx)
+  end
+
   def submission_css(submission, active_submission_for_prompt, prompt, stats)
   def submission_css(s, s, _, _), do: "bg-amber-300"
   def submission_css(%{completed: true}, _, _, _), do: "bg-emerald-400"
