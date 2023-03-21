@@ -20,7 +20,7 @@
   <tr class="border-white border-y-4">
     <%= for gp <- @game.game_players do %>
       <th class={"align-bottom pb-2 #{player_css(gp, @submission_stats)}"} style="writing-mode:sideways-lr">
-        <span class="font-semibold"><%= gp.id %><%= display_name(gp) %></span>
+        <span class="font-semibold"><%= display_name(gp) %></span>
       </th>
     <% end %>
   </tr>
