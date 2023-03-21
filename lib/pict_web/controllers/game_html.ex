@@ -38,9 +38,10 @@ defmodule PictWeb.GameHTML do
   def submission_css(submission, active_submission_for_prompt, prompt, stats)
   def submission_css(s, s, _, _), do: "bg-amber-300"
   def submission_css(%{completed: true}, _, _, _), do: "bg-emerald-400"
-  def submission_css(%{completed: false}, _, prompt, stats) do
+  def submission_css(%{order: i}, %{order: j}, prompt, stats) when i == j + 1 do
     remaining_color(prompt, stats)
   end
+  def submission_css(_, _, _, _), do: "bg-zinc-200"
 
   def submissions_count(%Prompt{submissions: submissions}) do
     length(submissions)
@@ -54,7 +55,6 @@ defmodule PictWeb.GameHTML do
     remaining = Prompts.submissions_remaining(prompt)
     delta = remaining - median
     colors = ~W[
-      bg-rose-50
       bg-rose-100
       bg-rose-200
       bg-rose-300
