@@ -57,9 +57,8 @@ defmodule PictWeb.GameHTML do
   end
 
   def submission_css(submission, active_submission_for_prompt, prompt, stats)
-  def submission_css(s, s, _, _), do: "bg-amber-300"
   def submission_css(%{completed: true}, _, _, _), do: "bg-emerald-400"
-  def submission_css(%{order: i}, %{order: j}, prompt, stats) when i == j + 1 do
+  def submission_css(s, s, prompt, stats) do
     remaining_color(prompt, stats)
   end
   def submission_css(_, _, _, _), do: "bg-zinc-200"
