@@ -71,9 +71,10 @@ defmodule PictWeb.GameHTML do
     Enum.count(submissions, fn s -> s.completed end)
   end
 
-  def remaining_color(prompt, %{ max_remaining: l, median_remaining: median }) do
+  defp remaining_color(prompt, %{ max_remaining: l, median_remaining: median }) do
     remaining = Prompts.submissions_remaining(prompt)
     delta = remaining - median
+    # Do it this way so we make all CSS explicit for Tailwind
     colors = ~W[
       bg-rose-100
       bg-rose-200
@@ -84,8 +85,7 @@ defmodule PictWeb.GameHTML do
       bg-rose-700
       bg-rose-800
     ]
-    adj_delta = delta / ( l / length(colors) )
-    # Do it this way so we make all CSS explicit for Tailwind
+    adj_delta = delta / ( l / (length(colors) - 1) )
     idx = 4 + round(adj_delta)
 
     colors
