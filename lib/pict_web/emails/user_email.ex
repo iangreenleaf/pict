@@ -1,5 +1,6 @@
 defmodule PictWeb.Emails.UserEmail do
   import Swoosh.Email
+  alias Pict.Prompts
 
   defp default_from(mail) do
     from_addr = System.get_env("PHX_EMAIL_FROM") || "pict@example.com"
@@ -30,10 +31,18 @@ defmodule PictWeb.Emails.UserEmail do
     new()
     |> to(submission.player)
     |> default_from()
-    |> subject("Take your turn in Telephone Pictionary (#{prompt_name})")
+    |> subject("#{submission_ready_title(submission)}: #{prompt_name}")
     |> render_with_layout(PictWeb.EmailHTML.submission_ready(
       %{submission: submission, owner_name: starter_name}
     ))
+  end
+
+  defp submission_ready_title(submission) do
+    if Prompts.expects_drawing?(submission) do
+      "Time to draw in Telephone Pictionary"
+    else
+      "Time to guess in Telephone Pictionary"
+    end
   end
 
   def submission_reminder(%{submission: submission, starter_name: starter_name, total: total}) do
@@ -41,7 +50,7 @@ defmodule PictWeb.Emails.UserEmail do
     new()
     |> to(submission.player)
     |> default_from()
-    |> subject("Your turn is waiting for you in Telephone Pictionary: (#{prompt_name})")
+    |> subject("Your turn is waiting for you in Telephone Pictionary: #{prompt_name}")
     |> render_with_layout(PictWeb.EmailHTML.submission_reminder(
       %{submission: submission, owner_name: starter_name, message: reminder_message()}
     ))
