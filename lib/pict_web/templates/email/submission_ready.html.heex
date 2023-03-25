@@ -1,5 +1,9 @@
 <p>
-  A new clue awaits! It's time to guess the prompt from <%= @owner_name %>.
+<%= if expects_drawing?(@submission) do %>
+  Get your pencil ready! It's time to draw the clue from <% @owner_name %>.
+<% else %>
+  A new clue awaits! It's time to guess the drawing from <%= @owner_name %>.
+<% end %>
 </p>
 <p>
   <.link href={url(~p"/submissions/#{@submission.id}/edit")}>
