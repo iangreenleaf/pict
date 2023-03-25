@@ -13,7 +13,7 @@ defmodule Pict.Prompts do
   alias Pict.Prompts.Prompt
   alias Pict.Prompts.Submission
 
-  def expects_drawing?(%Submission{order: order}) do
+  def expects_drawing?(%{order: order}) do
     Integer.is_odd(order)
   end
 

@@ -50,6 +50,14 @@ defmodule PictWeb.SubmissionLive.Show do
   defp page_title(:show), do: "Show Submission"
   defp page_title(:edit), do: "Edit Submission"
 
+  def prompt_link_text(submission) do
+    "#{prompt_action(submission)}: #{prompt_name(submission)}"
+  end
+
+  def prompt_action(submission) do
+    if expects_drawing?(submission), do: 'Draw', else: 'Guess'
+  end
+
   defp prompt_name(%{starter_name: name, order: order, total: total}) do
     "#{name} #{order + 1}/#{total}"
   end

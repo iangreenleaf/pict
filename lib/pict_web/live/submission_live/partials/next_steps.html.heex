@@ -6,7 +6,7 @@
     <ul class="space-y-2">
     <%= for s <- @next_submissions do %>
       <li><a href={~p"/submissions/#{s.id}/edit"} class="block text-teal-700 underline decoration-dotted">
-        <%= prompt_name(s) %>
+        <%= prompt_link_text(s) %>
       </a></li>
     <% end %>
     </ul>
