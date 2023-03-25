@@ -27,8 +27,10 @@
     <% end %>
   </tr>
   <tr class="">
-    <th class="h-8 text-zinc-500" rowspan={ 1 + length(@game.game_players) }>
-      Prompt
+    <th class="align-center text-zinc-500" rowspan={ 1 + length(@game.game_players) }>
+      <span style="writing-mode:vertical-lr" class="inline-block rotate-180 font-semibold">
+        Prompt
+      </span>
     </th>
   </tr>
   <%= for p <- @game.prompts do %>
