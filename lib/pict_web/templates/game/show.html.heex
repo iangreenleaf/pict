@@ -19,13 +19,15 @@
   </tr>
   <tr class="border-white border-y-4">
     <%= for gp <- @game.game_players do %>
-      <th class={"align-bottom pb-2 #{player_css(gp, @submission_stats)}"} style="writing-mode:sideways-lr">
-        <span class="font-semibold"><%= display_name(gp) %></span>
+      <th class={"align-bottom pt-2 #{player_css(gp, @submission_stats)}"}>
+        <span style="writing-mode:vertical-lr" class="inline-block rotate-180 font-semibold">
+          <%= display_name(gp) %>
+        </span>
       </th>
     <% end %>
   </tr>
   <tr class="">
-    <th style="writing-mode:sideways-lr" class="h-8 text-zinc-500" rowspan={ 1 + length(@game.game_players) }>
+    <th class="h-8 text-zinc-500" rowspan={ 1 + length(@game.game_players) }>
       Prompt
     </th>
   </tr>
