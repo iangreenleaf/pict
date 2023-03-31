@@ -61,7 +61,8 @@ defmodule Pict.Prompts do
       end)
 
     %Prompt{}
-    |> Prompt.changeset(%{owner: List.first(players)})
+    |> Prompt.changeset(%{})
+    |> put_assoc(:owner, List.first(players))
     |> put_assoc(:submissions, submissions)
     |> put_assoc(:game, game)
     |> Repo.insert!()
