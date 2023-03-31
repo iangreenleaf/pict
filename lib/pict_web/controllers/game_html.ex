@@ -85,8 +85,9 @@ defmodule PictWeb.GameHTML do
       bg-rose-700
       bg-rose-800
     ]
-    adj_delta = delta / ( l / (length(colors) - 1) )
-    idx = 4 + round(adj_delta)
+    median_color_idx = (length(colors) - 1) / 2
+    adj_delta = delta / ( l / median_color_idx )
+    idx = round(median_color_idx + adj_delta)
 
     colors
     |> Enum.at(idx)
