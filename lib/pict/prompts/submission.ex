@@ -13,6 +13,7 @@ defmodule Pict.Prompts.Submission do
     field :text, :string
     field :drawing, Pict.Drawing.Type
     belongs_to :prompt, Prompt
+    has_one :game, through: [:prompt, :game]
     belongs_to :game_player, GamePlayer
     has_one :player, through: [:game_player, :player]
 

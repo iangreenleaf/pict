@@ -22,6 +22,7 @@ defmodule PictWeb.Router do
     resources "/games", GameController, only: [:new, :create]
     get "/games/pending", GameController, :pending
     get "/games/:admin_id", GameController, :admin
+    get "/games/:admin_id/download", GameController, :download
     get "/games/:admin_id/confirm", GameController, :confirm
     post "/games/:admin_id/start", GameController, :start
     post "/games/:admin_id/prompts/:prompt_id/reminder", GameController, :reminder

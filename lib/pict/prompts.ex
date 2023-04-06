@@ -112,6 +112,18 @@ defmodule Pict.Prompts do
     |> Repo.one()
   end
 
+  def get_prompts_for_download(game_admin_id) do
+    from(
+      p in Prompt,
+      distinct: p.id,
+      join: submissions in assoc(p, :submissions),
+      join: game in assoc(p, :game),
+      where: game.admin_id == ^game_admin_id,
+      preload: [:submissions, :game, :owner]
+    )
+    |> Repo.all()
+  end
+
   def get_first_unfinished_for_admin(game_admin_id, prompt_id) do
     from(
       s in Submission,

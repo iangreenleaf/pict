@@ -2,6 +2,10 @@
   Your Game: <%= @game.name %>
 </.header>
 
+<.small_button href={~p"/games/#{@game.admin_id}/download"} >
+  <span>Download</span>
+</.small_button>
+
 <table class="mt-4">
   <colgroup>
     <col class="w-8" />
