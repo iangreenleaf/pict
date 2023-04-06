@@ -14,5 +14,9 @@ config :pict, PictWeb.Endpoint, cache_static_manifest: "priv/static/cache_manife
 # Do not print debug messages in production
 config :logger, level: :info
 
+# Elixir releases make the app_dir weird so just hardcode it
+config :pict, uploads_path: "/app/uploads"
+
+
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.

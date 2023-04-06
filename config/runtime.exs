@@ -20,12 +20,8 @@ if System.get_env("PHX_SERVER") do
   config :pict, PictWeb.Endpoint, server: true
 end
 
-config :pict, uploads_path: Path.expand("./uploads")
 
 if config_env() == :prod do
-  # Elixir releases make the app_dir weird so just hardcode it
-  config :pict, uploads_path: "/app/uploads"
-
   database_url =
     System.get_env("DATABASE_URL") ||
       raise """

@@ -10,6 +10,8 @@ import Config
 config :pict,
   ecto_repos: [Pict.Repo]
 
+config :pict, uploads_path: Path.expand("./uploads")
+
 # Configures the endpoint
 config :pict, PictWeb.Endpoint,
   url: [host: "localhost"],
