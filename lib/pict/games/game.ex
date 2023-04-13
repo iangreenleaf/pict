@@ -7,6 +7,7 @@ defmodule Pict.Games.Game do
 
   schema "games" do
     field :admin_id, Ecto.UUID, autogenerate: true
+    field :public_id, Ecto.UUID, autogenerate: true
     field :name, :string
     field :state, Ecto.Enum, values: [:pending, :started]
     belongs_to :owner, Account
