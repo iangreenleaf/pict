@@ -35,6 +35,8 @@ defmodule PictWeb.GameHTML do
     Enum.find(submissions, fn sub -> !sub.completed end)
   end
 
+  def player_css(_, %{max_remaining_by_player: 0}), do: "bg-white"
+
   def player_css(%{id: player_id}, stats) do
     remaining = Map.get(stats.remaining_by_player, player_id, 0)
     # Do it this way so we make all CSS explicit for Tailwind

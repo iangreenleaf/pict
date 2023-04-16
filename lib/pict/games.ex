@@ -82,7 +82,7 @@ defmodule Pict.Games do
       max_remaining: Enum.max(remaining),
       median_remaining: Math.Enum.median(remaining),
       remaining_by_player: remaining_by_player,
-      max_remaining_by_player: Enum.max(Map.values(remaining_by_player)),
+      max_remaining_by_player: Enum.max(Map.values(remaining_by_player), &>=/2, fn -> 0 end),
     }
   end
 
