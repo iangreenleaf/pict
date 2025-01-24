@@ -6,7 +6,7 @@ dokku plugin:install https://github.com/dokku/dokku-postgres.git
 dokku postgres:create pict
 dokku postgres:link pict pict
 dokku config:set pict SECRET_KEY_BASE=my-app-secret
-dokku buildpacks:add pict hashnuke/elixir
+dokku buildpacks:add pict gigalixir/gigalixir-buildpack-elixir
 ```
 
 Locally:
