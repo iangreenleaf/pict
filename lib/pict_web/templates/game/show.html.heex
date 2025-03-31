@@ -45,8 +45,10 @@
       <% active = current_active_submission(p) %>
       <%= for s <- rotated_submissions(p, @player_index) do %>
         <td class="border-white border-x-2">
-          <div class={"h-8 w-8 rounded-md #{submission_css(s, active, p, @submission_stats)}"}>
-          </div>
+          <a href={~p"/submissions/#{s.id}/edit"}>
+            <div class={"h-8 w-8 rounded-md #{submission_css(s, active, p, @submission_stats)}"}>
+            </div>
+          </a>
         </td>
       <% end %>
       <td class="text-left pl-2">
